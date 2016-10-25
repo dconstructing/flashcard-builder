@@ -21754,9 +21754,9 @@
 	            files: this.state.files,
 	            onSelected: this.fileSelected
 	          }),
-	          rows.map(function (row) {
+	          rows.map(function (row, i) {
 	            return _react2.default.createElement(_Card2.default, {
-	              key: row.id,
+	              key: i,
 	              data: row,
 	              frontTemplate: _this3.state.frontTemplate,
 	              backTemplate: _this3.state.backTemplate
