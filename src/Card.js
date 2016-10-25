@@ -16,8 +16,8 @@ class Card extends React.Component {
   }
 
   render() {
-    const frontTemplate = this.props.frontTemplate || '<p>{{col1}}</p>';
-    const backTemplate = this.props.backTemplate || '<p>{{col2}}</p>';
+    const frontTemplate = '<div>' + this.props.frontTemplate + '</div>' || '<p>{{col1}}</p>';
+    const backTemplate = '<div>' + this.props.backTemplate + '</div>' || '<p>{{col2}}</p>';
     const cardData = {};
     for (let i = 0; i < this.props.data.length; i++) {
       cardData['col' + (i + 1)] = this.props.data[i];

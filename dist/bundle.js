@@ -21834,8 +21834,8 @@
 	  _createClass(Card, [{
 	    key: 'render',
 	    value: function render() {
-	      var frontTemplate = this.props.frontTemplate || '<p>{{col1}}</p>';
-	      var backTemplate = this.props.backTemplate || '<p>{{col2}}</p>';
+	      var frontTemplate = '<div>' + this.props.frontTemplate + '</div>' || '<p>{{col1}}</p>';
+	      var backTemplate = '<div>' + this.props.backTemplate + '</div>' || '<p>{{col2}}</p>';
 	      var cardData = {};
 	      for (var i = 0; i < this.props.data.length; i++) {
 	        cardData['col' + (i + 1)] = this.props.data[i];
