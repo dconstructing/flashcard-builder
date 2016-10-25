@@ -76,6 +76,18 @@ class Workspace extends React.Component {
     });
   };
 
+  frontTemplateChanged = (event) => {
+    this.setState({
+      frontTemplate: event.target.value
+    });
+  }
+
+  backTemplateChanged = (event) => {
+    this.setState({
+      backTemplate: event.target.value
+    });
+  }
+
   render() {
     const rows = this.state.file.values || [];
     return(
@@ -92,6 +104,7 @@ class Workspace extends React.Component {
               rows.map((row) => {
                 return (
                   <Card
+                    key={row.id}
                     data={row}
                     frontTemplate={this.state.frontTemplate}
                     backTemplate={this.state.backTemplate}
@@ -99,6 +112,16 @@ class Workspace extends React.Component {
                 );
               })
             }
+            <textarea
+              name="frontTemplateField"
+              value={this.state.frontTemplate}
+              onChange={this.frontTemplateChanged}
+            />
+            <textarea
+              name="frontTemplateField"
+              value={this.state.backTemplate}
+              onChange={this.backTemplateChanged}
+            />
           </div>
           :
           <p>Loading ...</p>
