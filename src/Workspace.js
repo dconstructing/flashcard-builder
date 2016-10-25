@@ -101,10 +101,10 @@ class Workspace extends React.Component {
               onSelected={this.fileSelected}
             />
             {
-              rows.map((row) => {
+              rows.map((row, i) => {
                 return (
                   <Card
-                    key={row.id}
+                    key={i}
                     data={row}
                     frontTemplate={this.state.frontTemplate}
                     backTemplate={this.state.backTemplate}
