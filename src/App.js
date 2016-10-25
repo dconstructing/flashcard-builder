@@ -1,5 +1,6 @@
 import gapi from 'gapi';
 import React from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import Login from './Login';
 import Workspace from './Workspace';
@@ -58,15 +59,16 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <Login
-          authorized={this.state.google}
-          onLoginRequest={this.requestLogin}
-          onLogoutRequest={this.requestLogout}
-        />
-        <h1>Flashcards</h1>
-        <Workspace google={this.state.google} />
-      </div>
+      <MuiThemeProvider>
+        <div>
+          <Login
+            authorized={this.state.google}
+            onLoginRequest={this.requestLogin}
+            onLogoutRequest={this.requestLogout}
+          />
+          <Workspace google={this.state.google} />
+        </div>
+      </MuiThemeProvider>
     );
   }
 }

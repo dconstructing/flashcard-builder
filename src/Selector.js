@@ -1,5 +1,8 @@
 import React from 'react';
 
+import MenuItem from 'material-ui/MenuItem';
+import SelectField from 'material-ui/SelectField';
+
 class Selector extends React.Component {
   static propTypes = {
     files: React.PropTypes.array.isRequired,
@@ -8,28 +11,38 @@ class Selector extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      value: null
+    }
   }
 
-  fileSelected = (fileId) => {
-    this.props.onSelected(fileId);
+  fileSelected = (event, index, value) => {
+    this.props.onSelected(value);
+    this.setState({
+      value: value
+    })
   };
 
   render() {
     return (
-      <div>
-        <p>Which file contains your flashcards?</p>
+      <SelectField
+        hintText="flashcard file"
+        value={this.state.value}
+        onChange={this.fileSelected}
+      >
         {
           this.props.files.map((file) => {
             return (
-              <div key={file.id}>
-                <button onClick={() => this.fileSelected(file.id) }>
-                  {file.name}
-                </button>
-              </div>
+              <MenuItem
+                key={file.id}
+                value={file.id}
+                primaryText={file.name}
+              />
             );
           })
         }
-      </div>
+      </SelectField>
     )
   }
 }

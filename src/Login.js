@@ -12,7 +12,6 @@ class Login extends React.Component {
   }
 
   loginClicked = () => {
-    console.log('button clicked');
     this.props.onLoginRequest();
   }
 

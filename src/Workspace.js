@@ -4,6 +4,16 @@ import gapi from 'gapi';
 import Card from './Card';
 import Selector from './Selector';
 
+const headerStyle = {
+  borderBottom: '1px solid black'
+};
+const titleStyle = {
+  fontSize: '2rem',
+  fontWeight: 'bold',
+  marginRight: 10,
+  verticalAlign: 'top'
+};
+
 class Workspace extends React.Component {
   static propTypes = {
     google: React.PropTypes.bool.isRequired
@@ -96,10 +106,13 @@ class Workspace extends React.Component {
           this.state.sheets
           ?
           <div>
-            <Selector
-              files={this.state.files}
-              onSelected={this.fileSelected}
-            />
+            <header style={headerStyle}>
+              <span style={titleStyle}>Flashcard Builder ></span>
+              <Selector
+                files={this.state.files}
+                onSelected={this.fileSelected}
+              />
+            </header>
             {
               rows.map((row, i) => {
                 return (
