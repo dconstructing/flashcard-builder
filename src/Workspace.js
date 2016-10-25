@@ -114,13 +114,13 @@ class Workspace extends React.Component {
             }
             <textarea
               name="frontTemplateField"
-              value={this.state.frontTemplate}
-              onChange={this.frontTemplateChanged}
+              defaultValue={this.state.frontTemplate}
+              onBlur={this.frontTemplateChanged}
             />
             <textarea
               name="frontTemplateField"
-              value={this.state.backTemplate}
-              onChange={this.backTemplateChanged}
+              defaultValue={this.state.backTemplate}
+              onBlur={this.backTemplateChanged}
             />
           </div>
           :

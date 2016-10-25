@@ -21764,13 +21764,13 @@
 	          }),
 	          _react2.default.createElement('textarea', {
 	            name: 'frontTemplateField',
-	            value: this.state.frontTemplate,
-	            onChange: this.frontTemplateChanged
+	            defaultValue: this.state.frontTemplate,
+	            onBlur: this.frontTemplateChanged
 	          }),
 	          _react2.default.createElement('textarea', {
 	            name: 'frontTemplateField',
-	            value: this.state.backTemplate,
-	            onChange: this.backTemplateChanged
+	            defaultValue: this.state.backTemplate,
+	            onBlur: this.backTemplateChanged
 	          })
 	        ) : _react2.default.createElement(
 	          'p',
