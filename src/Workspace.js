@@ -13,6 +13,17 @@ const titleStyle = {
   marginRight: 10,
   verticalAlign: 'top'
 };
+const footerStyle = {
+  borderTop: '1px solid black',
+  bottom: 0,
+  position: 'absolute',
+  width: '100%'
+};
+const templateEditorStyle = {
+  height: 100,
+  margin: 20,
+  width: '40%'
+};
 
 class Workspace extends React.Component {
   static propTypes = {
@@ -27,6 +38,7 @@ class Workspace extends React.Component {
       sheets: false,
       files: [],
       file: {},
+      footerOpen: false,
       frontTemplate: '<p>{{col1}}</p>',
       backTemplate: '<p>{{col2}}</p>'
     };
@@ -86,6 +98,12 @@ class Workspace extends React.Component {
     });
   };
 
+  toggleFooter = () => {
+    this.setState({
+      footerOpen: !this.state.footerOpen
+    });
+  }
+
   frontTemplateChanged = (event) => {
     this.setState({
       frontTemplate: event.target.value
@@ -125,16 +143,31 @@ class Workspace extends React.Component {
                 );
               })
             }
-            <textarea
-              name="frontTemplateField"
-              defaultValue={this.state.frontTemplate}
-              onBlur={this.frontTemplateChanged}
-            />
-            <textarea
-              name="frontTemplateField"
-              defaultValue={this.state.backTemplate}
-              onBlur={this.backTemplateChanged}
-            />
+            <footer style={footerStyle}>
+              {
+                this.state.footerOpen
+                ?
+                <div>
+                  <p onClick={this.toggleFooter}>Hide card templates</p>
+                  <textarea
+                    name="frontTemplateField"
+                    style={templateEditorStyle}
+                    defaultValue={this.state.frontTemplate}
+                    onBlur={this.frontTemplateChanged}
+                  />
+                  <textarea
+                    name="backTemplateField"
+                    style={templateEditorStyle}
+                    defaultValue={this.state.backTemplate}
+                    onBlur={this.backTemplateChanged}
+                  />
+                </div>
+                :
+                <div>
+                  <p onClick={this.toggleFooter}>Edit card templates</p>
+                </div>
+              }
+            </footer>
           </div>
           :
           <p>Loading ...</p>
