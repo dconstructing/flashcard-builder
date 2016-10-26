@@ -2,6 +2,10 @@ import React from 'react';
 import Mustache from 'mustache';
 import { Parser } from 'html-to-react';
 
+const cardStyle = {
+  border: '1px solid black'
+};
+
 class Card extends React.Component {
   static propTypes = {
     data: React.PropTypes.array.isRequired,
@@ -13,6 +17,16 @@ class Card extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {
+      front: true
+    };
+  }
+
+  cardClicked = () => {
+    this.setState({
+      front: !this.state.front
+    });
   }
 
   render() {
@@ -27,11 +41,20 @@ class Card extends React.Component {
     const backHtml = this.htmlToReactParser.parse(Mustache.render(backTemplate, cardData));
 
     return(
-      <div>
-        <div className="front">
+      <div
+        style={cardStyle}
+        onClick={this.cardClicked}
+      >
+        <div
+          className="front"
+          hidden={!this.state.front}
+        >
           {frontHtml}
         </div>
-        <div className="back">
+        <div
+          className="back"
+          hidden={this.state.front}
+        >
           {backHtml}
         </div>
       </div>
