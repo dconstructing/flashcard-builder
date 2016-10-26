@@ -147,7 +147,12 @@ class Workspace extends React.Component {
                 />
               </div>
               <div>
-                <a href="https://www.paypal.me/davidgawaincox">Donate</a>
+                <p>
+                  Donate with:
+                  <a href="https://www.paypal.me/davidgawaincox">PayPal</a>
+                  -
+                  <a href="https://cash.me/$davidgawaincox">Square Cash</a>
+                </p>
               </div>
             </header>
             {

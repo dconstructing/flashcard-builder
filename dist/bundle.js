@@ -29537,9 +29537,20 @@
 	              'div',
 	              null,
 	              _react2.default.createElement(
-	                'a',
-	                { href: 'https://www.paypal.me/davidgawaincox' },
-	                'Donate'
+	                'p',
+	                null,
+	                'Donate with:',
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: 'https://www.paypal.me/davidgawaincox' },
+	                  'PayPal'
+	                ),
+	                '-',
+	                _react2.default.createElement(
+	                  'a',
+	                  { href: 'https://cash.me/$davidgawaincox' },
+	                  'Square Cash'
+	                )
 	              )
 	            )
 	          ),
