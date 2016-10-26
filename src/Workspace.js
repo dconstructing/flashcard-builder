@@ -1,6 +1,8 @@
 import React from 'react';
 import gapi from 'gapi';
 
+import FlatButton from 'material-ui/FlatButton';
+
 import Card from './Card';
 import Selector from './Selector';
 
@@ -163,7 +165,11 @@ class Workspace extends React.Component {
                 this.state.footerOpen
                 ?
                 <div>
-                  <p onClick={this.toggleFooter}>Hide card templates</p>
+                  <FlatButton
+                    label="Hide card templates"
+                    primary={true}
+                    onClick={this.toggleFooter}
+                  />
                   <textarea
                     name="frontTemplateField"
                     style={templateEditorStyle}
@@ -179,7 +185,11 @@ class Workspace extends React.Component {
                 </div>
                 :
                 <div>
-                  <p onClick={this.toggleFooter}>Edit card templates</p>
+                  <FlatButton
+                    label="Edit card templates"
+                    primary={true}
+                    onClick={this.toggleFooter}
+                  />
                 </div>
               }
             </footer>
