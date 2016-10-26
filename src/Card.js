@@ -2,12 +2,9 @@ import React from 'react';
 import Mustache from 'mustache';
 import { Parser } from 'html-to-react';
 
-const cardStyle = {
-  border: '1px solid black'
-};
-
 class Card extends React.Component {
   static propTypes = {
+    style: React.PropTypes.object,
     data: React.PropTypes.array.isRequired,
     frontTemplate: React.PropTypes.string,
     backTemplate: React.PropTypes.string
@@ -42,7 +39,7 @@ class Card extends React.Component {
 
     return(
       <div
-        style={cardStyle}
+        style={this.props.style}
         onClick={this.cardClicked}
       >
         <div

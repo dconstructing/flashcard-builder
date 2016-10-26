@@ -29382,6 +29382,22 @@
 	  marginRight: 10,
 	  verticalAlign: 'top'
 	};
+	var cardStyle = {
+	  border: '1px solid black',
+	  margin: 20,
+	  padding: 20
+	};
+	var footerStyle = {
+	  borderTop: '1px solid black',
+	  bottom: 0,
+	  position: 'absolute',
+	  width: '100%'
+	};
+	var templateEditorStyle = {
+	  height: 100,
+	  margin: 20,
+	  width: '40%'
+	};
 	
 	var Workspace = function (_React$Component) {
 	  _inherits(Workspace, _React$Component);
@@ -29424,6 +29440,12 @@
 	      });
 	    };
 	
+	    _this.toggleFooter = function () {
+	      _this.setState({
+	        footerOpen: !_this.state.footerOpen
+	      });
+	    };
+	
 	    _this.frontTemplateChanged = function (event) {
 	      _this.setState({
 	        frontTemplate: event.target.value
@@ -29441,6 +29463,7 @@
 	      sheets: false,
 	      files: [],
 	      file: {},
+	      footerOpen: false,
 	      frontTemplate: '<p>{{col1}}</p>',
 	      backTemplate: '<p>{{col2}}</p>'
 	    };
@@ -29496,24 +29519,61 @@
 	              onSelected: this.fileSelected
 	            })
 	          ),
-	          rows.map(function (row, i) {
-	            return _react2.default.createElement(_Card2.default, {
-	              key: i,
-	              data: row,
-	              frontTemplate: _this3.state.frontTemplate,
-	              backTemplate: _this3.state.backTemplate
-	            });
-	          }),
-	          _react2.default.createElement('textarea', {
-	            name: 'frontTemplateField',
-	            defaultValue: this.state.frontTemplate,
-	            onBlur: this.frontTemplateChanged
-	          }),
-	          _react2.default.createElement('textarea', {
-	            name: 'frontTemplateField',
-	            defaultValue: this.state.backTemplate,
-	            onBlur: this.backTemplateChanged
-	          })
+	          rows.length > 0 ? _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Tap card to flip'
+	            ),
+	            rows.map(function (row, i) {
+	              return _react2.default.createElement(_Card2.default, {
+	                key: i,
+	                style: cardStyle,
+	                data: row,
+	                frontTemplate: _this3.state.frontTemplate,
+	                backTemplate: _this3.state.backTemplate
+	              });
+	            })
+	          ) : _react2.default.createElement(
+	            'p',
+	            null,
+	            'Select a file'
+	          ),
+	          _react2.default.createElement(
+	            'footer',
+	            { style: footerStyle },
+	            this.state.footerOpen ? _react2.default.createElement(
+	              'div',
+	              null,
+	              _react2.default.createElement(
+	                'p',
+	                { onClick: this.toggleFooter },
+	                'Hide card templates'
+	              ),
+	              _react2.default.createElement('textarea', {
+	                name: 'frontTemplateField',
+	                style: templateEditorStyle,
+	                defaultValue: this.state.frontTemplate,
+	                onBlur: this.frontTemplateChanged
+	              }),
+	              _react2.default.createElement('textarea', {
+	                name: 'backTemplateField',
+	                style: templateEditorStyle,
+	                defaultValue: this.state.backTemplate,
+	                onBlur: this.backTemplateChanged
+	              })
+	            ) : _react2.default.createElement(
+	              'div',
+	              null,
+	              _react2.default.createElement(
+	                'p',
+	                { onClick: this.toggleFooter },
+	                'Edit card templates'
+	              )
+	            )
+	          )
 	        ) : _react2.default.createElement(
 	          'p',
 	          null,
@@ -29561,10 +29621,6 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var cardStyle = {
-	  border: '1px solid black'
-	};
-	
 	var Card = function (_React$Component) {
 	  _inherits(Card, _React$Component);
 	
@@ -29603,7 +29659,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        {
-	          style: cardStyle,
+	          style: this.props.style,
 	          onClick: this.cardClicked
 	        },
 	        _react2.default.createElement(
@@ -29630,6 +29686,7 @@
 	}(_react2.default.Component);
 	
 	Card.propTypes = {
+	  style: _react2.default.PropTypes.object,
 	  data: _react2.default.PropTypes.array.isRequired,
 	  frontTemplate: _react2.default.PropTypes.string,
 	  backTemplate: _react2.default.PropTypes.string

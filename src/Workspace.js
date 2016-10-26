@@ -13,6 +13,11 @@ const titleStyle = {
   marginRight: 10,
   verticalAlign: 'top'
 };
+const cardStyle = {
+  border: '1px solid black',
+  margin: 20,
+  padding: 20
+};
 const footerStyle = {
   borderTop: '1px solid black',
   bottom: 0,
@@ -132,16 +137,26 @@ class Workspace extends React.Component {
               />
             </header>
             {
-              rows.map((row, i) => {
-                return (
-                  <Card
-                    key={i}
-                    data={row}
-                    frontTemplate={this.state.frontTemplate}
-                    backTemplate={this.state.backTemplate}
-                  />
-                );
-              })
+              rows.length > 0
+              ?
+              <div>
+                <p>Tap card to flip</p>
+                {
+                  rows.map((row, i) => {
+                    return (
+                      <Card
+                        key={i}
+                        style={cardStyle}
+                        data={row}
+                        frontTemplate={this.state.frontTemplate}
+                        backTemplate={this.state.backTemplate}
+                      />
+                    );
+                  })
+                }
+              </div>
+              :
+              <p>Select a file</p>
             }
             <footer style={footerStyle}>
               {
