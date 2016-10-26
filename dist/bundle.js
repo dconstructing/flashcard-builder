@@ -29378,7 +29378,9 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
 	var headerStyle = {
-	  borderBottom: '1px solid black'
+	  borderBottom: '1px solid black',
+	  display: 'flex',
+	  justifyContent: 'space-between'
 	};
 	var titleStyle = {
 	  fontSize: '2rem',
@@ -29514,14 +29516,27 @@
 	            'header',
 	            { style: headerStyle },
 	            _react2.default.createElement(
-	              'span',
-	              { style: titleStyle },
-	              'Flashcard Builder >'
+	              'div',
+	              null,
+	              _react2.default.createElement(
+	                'span',
+	                { style: titleStyle },
+	                'Flashcard Builder >'
+	              ),
+	              _react2.default.createElement(_Selector2.default, {
+	                files: this.state.files,
+	                onSelected: this.fileSelected
+	              })
 	            ),
-	            _react2.default.createElement(_Selector2.default, {
-	              files: this.state.files,
-	              onSelected: this.fileSelected
-	            })
+	            _react2.default.createElement(
+	              'div',
+	              null,
+	              _react2.default.createElement(
+	                'a',
+	                { href: 'https://www.paypal.me/davidgawaincox' },
+	                'Donate'
+	              )
+	            )
 	          ),
 	          rows.length > 0 ? _react2.default.createElement(
 	            'div',

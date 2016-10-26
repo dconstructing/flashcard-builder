@@ -7,7 +7,9 @@ import Card from './Card';
 import Selector from './Selector';
 
 const headerStyle = {
-  borderBottom: '1px solid black'
+  borderBottom: '1px solid black',
+  display: 'flex',
+  justifyContent: 'space-between'
 };
 const titleStyle = {
   fontSize: '2rem',
@@ -132,11 +134,16 @@ class Workspace extends React.Component {
           ?
           <div>
             <header style={headerStyle}>
-              <span style={titleStyle}>Flashcard Builder ></span>
-              <Selector
-                files={this.state.files}
-                onSelected={this.fileSelected}
-              />
+              <div>
+                <span style={titleStyle}>Flashcard Builder ></span>
+                <Selector
+                  files={this.state.files}
+                  onSelected={this.fileSelected}
+                />
+              </div>
+              <div>
+                <a href="https://www.paypal.me/davidgawaincox">Donate</a>
+              </div>
             </header>
             {
               rows.length > 0
