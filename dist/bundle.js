@@ -29394,15 +29394,20 @@
 	  padding: 20
 	};
 	var footerStyle = {
+	  backgroundColor: '#ffffff',
 	  borderTop: '1px solid black',
 	  bottom: 0,
 	  position: 'absolute',
 	  width: '100%'
 	};
+	var templateHolderStyle = {
+	  display: 'flex',
+	  justifyContent: 'space-around',
+	  margin: '20px 0'
+	};
 	var templateEditorStyle = {
 	  height: 100,
-	  margin: 20,
-	  width: '40%'
+	  width: '35%'
 	};
 	
 	var Workspace = function (_React$Component) {
@@ -29571,18 +29576,85 @@
 	                primary: true,
 	                onClick: this.toggleFooter
 	              }),
-	              _react2.default.createElement('textarea', {
-	                name: 'frontTemplateField',
-	                style: templateEditorStyle,
-	                defaultValue: this.state.frontTemplate,
-	                onBlur: this.frontTemplateChanged
-	              }),
-	              _react2.default.createElement('textarea', {
-	                name: 'backTemplateField',
-	                style: templateEditorStyle,
-	                defaultValue: this.state.backTemplate,
-	                onBlur: this.backTemplateChanged
-	              })
+	              _react2.default.createElement(
+	                'div',
+	                { style: templateHolderStyle },
+	                _react2.default.createElement('textarea', {
+	                  name: 'frontTemplateField',
+	                  style: templateEditorStyle,
+	                  defaultValue: this.state.frontTemplate,
+	                  onBlur: this.frontTemplateChanged
+	                }),
+	                _react2.default.createElement('textarea', {
+	                  name: 'backTemplateField',
+	                  style: templateEditorStyle,
+	                  defaultValue: this.state.backTemplate,
+	                  onBlur: this.backTemplateChanged
+	                }),
+	                _react2.default.createElement(
+	                  'div',
+	                  null,
+	                  _react2.default.createElement(
+	                    'ul',
+	                    null,
+	                    _react2.default.createElement(
+	                      'li',
+	                      null,
+	                      'One of each template will be renderd for each row of your spreadsheet'
+	                    ),
+	                    _react2.default.createElement(
+	                      'li',
+	                      null,
+	                      'When rendered, ',
+	                      _react2.default.createElement(
+	                        'code',
+	                        null,
+	                        '{',
+	                        '{',
+	                        'col1',
+	                        '}',
+	                        '}'
+	                      ),
+	                      ' will be replace with the data in the first column of the row'
+	                    ),
+	                    _react2.default.createElement(
+	                      'li',
+	                      null,
+	                      'Similarly, You can use ',
+	                      _react2.default.createElement(
+	                        'code',
+	                        null,
+	                        '{',
+	                        '{',
+	                        'col2',
+	                        '}',
+	                        '}'
+	                      ),
+	                      ', ',
+	                      _react2.default.createElement(
+	                        'code',
+	                        null,
+	                        '{',
+	                        '{',
+	                        'col3',
+	                        '}',
+	                        '}'
+	                      ),
+	                      ', etc to render other columns of data'
+	                    ),
+	                    _react2.default.createElement(
+	                      'li',
+	                      null,
+	                      'Use standard HTML syntax in template'
+	                    ),
+	                    _react2.default.createElement(
+	                      'li',
+	                      null,
+	                      'Templates will reset when page reloads'
+	                    )
+	                  )
+	                )
+	              )
 	            ) : _react2.default.createElement(
 	              'div',
 	              null,

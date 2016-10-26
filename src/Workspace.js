@@ -23,15 +23,20 @@ const cardStyle = {
   padding: 20
 };
 const footerStyle = {
+  backgroundColor: '#ffffff',
   borderTop: '1px solid black',
   bottom: 0,
   position: 'absolute',
   width: '100%'
 };
+const templateHolderStyle = {
+  display: 'flex',
+  justifyContent: 'space-around',
+  margin: '20px 0'
+};
 const templateEditorStyle = {
   height: 100,
-  margin: 20,
-  width: '40%'
+  width: '35%'
 };
 
 class Workspace extends React.Component {
@@ -177,18 +182,29 @@ class Workspace extends React.Component {
                     primary={true}
                     onClick={this.toggleFooter}
                   />
-                  <textarea
-                    name="frontTemplateField"
-                    style={templateEditorStyle}
-                    defaultValue={this.state.frontTemplate}
-                    onBlur={this.frontTemplateChanged}
-                  />
-                  <textarea
-                    name="backTemplateField"
-                    style={templateEditorStyle}
-                    defaultValue={this.state.backTemplate}
-                    onBlur={this.backTemplateChanged}
-                  />
+                  <div style={templateHolderStyle}>
+                    <textarea
+                      name="frontTemplateField"
+                      style={templateEditorStyle}
+                      defaultValue={this.state.frontTemplate}
+                      onBlur={this.frontTemplateChanged}
+                    />
+                    <textarea
+                      name="backTemplateField"
+                      style={templateEditorStyle}
+                      defaultValue={this.state.backTemplate}
+                      onBlur={this.backTemplateChanged}
+                    />
+                    <div>
+                      <ul>
+                        <li>One of each template will be renderd for each row of your spreadsheet</li>
+                        <li>When rendered, <code>{'{'}{'{'}col1{'}'}{'}'}</code> will be replace with the data in the first column of the row</li>
+                        <li>Similarly, You can use <code>{'{'}{'{'}col2{'}'}{'}'}</code>, <code>{'{'}{'{'}col3{'}'}{'}'}</code>, etc to render other columns of data</li>
+                        <li>Use standard HTML syntax in template</li>
+                        <li>Templates will reset when page reloads</li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
                 :
                 <div>
