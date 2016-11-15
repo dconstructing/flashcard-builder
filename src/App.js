@@ -74,7 +74,7 @@ class App extends React.Component {
   loadFiles = () => {
     console.log('loading files')
     gapi.client.drive.files.list({
-      pageSize: 10
+      q: 'mimeType="application/vnd.google-apps.spreadsheet"'
       // fields: "nextPageToken, files(id, name)"
     }).execute((response) => {
       console.log('loaded files', response.files);
