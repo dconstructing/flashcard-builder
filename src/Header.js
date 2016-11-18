@@ -5,7 +5,8 @@ import Selector from './Selector';
 const headerStyle = {
   borderBottom: '1px solid black',
   display: 'flex',
-  justifyContent: 'space-between'
+  justifyContent: 'space-between',
+  flexShrink: '0'
 };
 
 class Header extends React.Component {

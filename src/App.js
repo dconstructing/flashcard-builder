@@ -15,11 +15,20 @@ const SCOPES = [
   'https://www.googleapis.com/auth/drive.metadata.readonly'
 ];
 
+const appWrapperStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%'
+};
 const titleStyle = {
   fontSize: '2rem',
   fontWeight: 'bold',
   marginRight: 10,
   verticalAlign: 'top'
+};
+const workspaceWrapperStyle = {
+  display: 'flex',
+  flex: '1'
 };
 
 class App extends React.Component {
@@ -111,7 +120,7 @@ class App extends React.Component {
   render() {
     return (
       <MuiThemeProvider>
-        <div>
+        <div style={appWrapperStyle}>
           <Header>
             <div>
               <span style={titleStyle}>Flashcard Builder ></span>
@@ -134,15 +143,17 @@ class App extends React.Component {
               </p>
             </div>
           </Header>
-          {
-            Object.keys(this.state.file).length === 0
-            ?
-            <div>
-              <p>Select a file</p>
-            </div>
-            :
-            <Workspace file={this.state.file} />
-          }
+          <div style={workspaceWrapperStyle}>
+            {
+              Object.keys(this.state.file).length === 0
+              ?
+              <div>
+                <p>Select a file</p>
+              </div>
+              :
+              <Workspace file={this.state.file} />
+            }
+          </div>
         </div>
       </MuiThemeProvider>
     );

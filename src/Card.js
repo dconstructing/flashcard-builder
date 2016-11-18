@@ -6,24 +6,16 @@ class Card extends React.Component {
   static propTypes = {
     style: React.PropTypes.object,
     data: React.PropTypes.array.isRequired,
+    front: React.PropTypes.bool,
     frontTemplate: React.PropTypes.string,
-    backTemplate: React.PropTypes.string
+    backTemplate: React.PropTypes.string,
+    onCardClicked: React.PropTypes.func
   };
 
   htmlToReactParser = new Parser();
 
   constructor(props) {
     super(props);
-
-    this.state = {
-      front: true
-    };
-  }
-
-  cardClicked = () => {
-    this.setState({
-      front: !this.state.front
-    });
   }
 
   render() {
@@ -40,17 +32,17 @@ class Card extends React.Component {
     return(
       <div
         style={this.props.style}
-        onClick={this.cardClicked}
+        onClick={this.props.onCardClicked}
       >
         <div
           className="front"
-          hidden={!this.state.front}
+          hidden={!this.props.front}
         >
           {frontHtml}
         </div>
         <div
           className="back"
-          hidden={this.state.front}
+          hidden={this.props.front}
         >
           {backHtml}
         </div>

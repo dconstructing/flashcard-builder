@@ -7,9 +7,16 @@ import Card from './Card';
 import Selector from './Selector';
 
 const cardStyle = {
+  width: '75vw',
+  height: '45vw',
+  fontSize: '10vw',
   border: '1px solid black',
-  margin: 20,
-  padding: 20
+};
+const workspaceStyle = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%'
 };
 const templateDrawerStyle = {
   backgroundColor: '#ffffff',
@@ -39,7 +46,9 @@ class Workspace extends React.Component {
     this.state = {
       frontTemplate: '<p>{{col1}}</p>',
       backTemplate: '<p>{{col2}}</p>',
-      templateDrawerOpen: false
+      templateDrawerOpen: false,
+      cardIndex: 0,
+      cardFresh: true
     };
   }
 
@@ -61,32 +70,67 @@ class Workspace extends React.Component {
     });
   }
 
+  cardClicked = (event) => {
+    this.setState({
+      cardFresh: !this.state.cardFresh
+    });
+  }
+
+  onPreviousCard = (event) => {
+    var newIndex = this.state.cardIndex - 1;
+    if (newIndex < 0) {
+      newIndex = this.props.file.values.length - 1;
+    }
+    this.setState({
+      cardIndex: newIndex,
+      cardFres: true
+    });
+  }
+
+  onNextCard = (event) => {
+    var newIndex = this.state.cardIndex + 1;
+    if (newIndex >= this.props.file.values.length) {
+      newIndex = 0;
+    }
+    this.setState({
+      cardIndex: newIndex,
+      cardFresh: true
+    });
+  }
+
   render() {
-    const rows = this.props.file ? this.props.file.values || [] : [];
+    const cards = this.props.file ? this.props.file.values || [] : [];
+    const card = cards[this.state.cardIndex];
     return(
-      <div>
-        {
-          rows.length > 0
-          ?
-          <div>
-            <p>Tap card to flip</p>
-            {
-              rows.map((row, i) => {
-                return (
-                  <Card
-                    key={i}
-                    style={cardStyle}
-                    data={row}
-                    frontTemplate={this.state.frontTemplate}
-                    backTemplate={this.state.backTemplate}
-                  />
-                );
-              })
-            }
-          </div>
-          :
-          <p>No cards found</p>
-        }
+      <div style={workspaceStyle}>
+        <div>
+          {
+            cards.length > 0
+            ?
+            <div>
+              <Card
+                style={cardStyle}
+                data={card}
+                front={this.state.cardFresh}
+                frontTemplate={this.state.frontTemplate}
+                backTemplate={this.state.backTemplate}
+                onCardClicked={this.cardClicked}
+              />
+              <FlatButton
+                label="previous"
+                primary={true}
+                onClick={this.onPreviousCard}
+              />
+              <FlatButton
+                label="next"
+                primary={true}
+                onClick={this.onNextCard}
+              />
+            </div>
+            :
+            <p>No cards found</p>
+          }
+        </div>
         <div style={templateDrawerStyle}>
           {
             this.state.templateDrawerOpen
