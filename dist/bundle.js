@@ -40058,12 +40058,6 @@
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	
-	var cardStyle = {
-	  width: '75vw',
-	  height: '45vw',
-	  fontSize: '10vw',
-	  border: '1px solid black'
-	};
 	var workspaceStyle = {
 	  display: 'flex',
 	  justifyContent: 'center',
@@ -40094,6 +40088,41 @@
 	    _classCallCheck(this, Workspace);
 	
 	    var _this = _possibleConstructorReturn(this, (Workspace.__proto__ || Object.getPrototypeOf(Workspace)).call(this, props));
+	
+	    _this.componentDidMount = function () {
+	      window.addEventListener("resize", _this.updateDimensions);
+	      _this.updateDimensions();
+	    };
+	
+	    _this.componentWillUnmount = function () {
+	      window.removeEventListener("resize", _this.updateDimensions);
+	    };
+	
+	    _this.updateDimensions = function () {
+	      var workspace = document.getElementById('workspace');
+	      var height;
+	      var width;
+	      if (workspace !== null) {
+	        height = workspace.clientHeight - 100;
+	        if (height < 60) {
+	          console.log('too short');
+	          return;
+	        }
+	        width = height / 3 * 5;
+	        if (width > workspace.clientWidth - 100) {
+	          width = workspace.clientWidth - 100;
+	          height = width / 5 * 3;
+	        }
+	        if (width < 100) {
+	          console.log('too narrow');
+	          return;
+	        }
+	        _this.setState({
+	          cardWidth: width,
+	          cardHeight: height
+	        });
+	      }
+	    };
 	
 	    _this.toggleTemplateDrawer = function () {
 	      _this.setState({
@@ -40146,7 +40175,9 @@
 	      backTemplate: '<p>{{col2}}</p>',
 	      templateDrawerOpen: false,
 	      cardIndex: 0,
-	      cardFresh: true
+	      cardFresh: true,
+	      cardWidth: 0,
+	      cardHeight: 0
 	    };
 	    return _this;
 	  }
@@ -40156,9 +40187,17 @@
 	    value: function render() {
 	      var cards = this.props.file ? this.props.file.values || [] : [];
 	      var card = cards[this.state.cardIndex];
+	      var cardStyle = {
+	        border: '1px solid black',
+	        height: this.state.cardHeight,
+	        width: this.state.cardWidth
+	      };
 	      return _react2.default.createElement(
 	        'div',
-	        { style: workspaceStyle },
+	        {
+	          id: 'workspace',
+	          style: workspaceStyle
+	        },
 	        _react2.default.createElement(
 	          'div',
 	          null,

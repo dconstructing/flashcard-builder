@@ -6,12 +6,6 @@ import FlatButton from 'material-ui/FlatButton';
 import Card from './Card';
 import Selector from './Selector';
 
-const cardStyle = {
-  width: '75vw',
-  height: '45vw',
-  fontSize: '10vw',
-  border: '1px solid black',
-};
 const workspaceStyle = {
   display: 'flex',
   justifyContent: 'center',
@@ -48,8 +42,44 @@ class Workspace extends React.Component {
       backTemplate: '<p>{{col2}}</p>',
       templateDrawerOpen: false,
       cardIndex: 0,
-      cardFresh: true
+      cardFresh: true,
+      cardWidth: 0,
+      cardHeight: 0
     };
+  }
+
+  componentDidMount = () => {
+    window.addEventListener("resize", this.updateDimensions);
+    this.updateDimensions();
+  }
+  componentWillUnmount = () => {
+    window.removeEventListener("resize", this.updateDimensions);
+  }
+
+  updateDimensions = () => {
+    var workspace = document.getElementById('workspace');
+    var height;
+    var width;
+    if (workspace !== null) {
+      height = workspace.clientHeight - 100;
+      if (height < 60) {
+        console.log('too short');
+        return;
+      }
+      width = (height / 3) * 5;
+      if (width > (workspace.clientWidth - 100)) {
+        width = workspace.clientWidth - 100;
+        height = (width / 5) * 3;
+      }
+      if (width < 100) {
+        console.log('too narrow');
+        return;
+      }
+      this.setState({
+        cardWidth: width,
+        cardHeight: height
+      });
+    }
   }
 
   toggleTemplateDrawer = () => {
@@ -101,8 +131,16 @@ class Workspace extends React.Component {
   render() {
     const cards = this.props.file ? this.props.file.values || [] : [];
     const card = cards[this.state.cardIndex];
+    const cardStyle = {
+      border: '1px solid black',
+      height: this.state.cardHeight,
+      width: this.state.cardWidth
+    };
     return(
-      <div style={workspaceStyle}>
+      <div
+        id="workspace"
+        style={workspaceStyle}
+      >
         <div>
           {
             cards.length > 0
