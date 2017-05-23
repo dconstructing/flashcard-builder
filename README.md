@@ -1,5 +1,7 @@
 # flashcard-builder
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/dconstructing/flashcard-builder.svg)](https://greenkeeper.io/)
+
 Visit https://dconstructing.github.io/flashcard-builder/
 
 ## Development
