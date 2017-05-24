@@ -51,4 +51,10 @@ class Card extends React.Component {
   }
 }
 
+Card.defaultProps = {
+  front: true,
+  backTemplate: '<p>{{col2}}</p>',
+  frontTemplate: '<p>{{col1}}</p>'
+};
+
 export default Card;
