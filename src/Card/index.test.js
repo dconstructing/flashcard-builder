@@ -21,7 +21,7 @@ describe('happy path', () => {
     const back = card.find('div.back').first();
     expect(front.prop('hidden')).toBe(false);
     expect(back.prop('hidden')).toBe(true);
-    expect(front.html()).toBe('<div class="front"><div><p>first</p></div></div>');
-    expect(back.html()).toBe('<div class="back" hidden=""><div><p>second</p></div></div>');
+    expect(front.html()).toBe('<div class="front"><p>first</p></div>');
+    expect(back.html()).toBe('<div class="back" hidden=""><p>second</p></div>');
   })    
 })
