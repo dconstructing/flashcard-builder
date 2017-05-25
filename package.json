@@ -31,7 +31,6 @@
   "scripts": {
     "dev": "webpack --progress --colors --watch",
     "build": "webpack",
-    "serve": "http-server",
     "test": "npm run test:source && npm run test:built",
     "test:built": "npm run build",
     "test:source": "jest"
