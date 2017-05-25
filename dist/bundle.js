@@ -41690,15 +41690,13 @@
 	  _createClass(Card, [{
 	    key: 'render',
 	    value: function render() {
-	      var frontTemplate = '<div>' + this.props.frontTemplate + '</div>' || '<p>{{col1}}</p>';
-	      var backTemplate = '<div>' + this.props.backTemplate + '</div>' || '<p>{{col2}}</p>';
 	      var cardData = {};
 	      for (var i = 0; i < this.props.data.length; i++) {
 	        cardData['col' + (i + 1)] = this.props.data[i];
 	      }
 	
-	      var frontHtml = this.htmlToReactParser.parse(_mustache2.default.render(frontTemplate, cardData));
-	      var backHtml = this.htmlToReactParser.parse(_mustache2.default.render(backTemplate, cardData));
+	      var frontHtml = this.htmlToReactParser.parse(_mustache2.default.render(this.props.frontTemplate, cardData));
+	      var backHtml = this.htmlToReactParser.parse(_mustache2.default.render(this.props.backTemplate, cardData));
 	
 	      return _react2.default.createElement(
 	        'div',
@@ -41729,14 +41727,12 @@
 	  return Card;
 	}(_react2.default.Component);
 	
-	Card.propTypes = {
-	  style: _react2.default.PropTypes.object,
-	  data: _react2.default.PropTypes.array.isRequired,
-	  front: _react2.default.PropTypes.bool,
-	  frontTemplate: _react2.default.PropTypes.string,
-	  backTemplate: _react2.default.PropTypes.string,
-	  onCardClicked: _react2.default.PropTypes.func
+	Card.defaultProps = {
+	  front: true,
+	  backTemplate: '<p>{{col2}}</p>',
+	  frontTemplate: '<p>{{col1}}</p>'
 	};
+	
 	exports.default = Card;
 
 /***/ }),
