@@ -44,7 +44,6 @@ module.exports = {
     // "react": "React",
     // "react-dom": "ReactDOM"
     "gapi": "gapi",
-    "jade": "jade",
-    "mustache": "Mustache"
+    "jade": "jade"
   },
 };

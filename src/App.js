@@ -105,15 +105,27 @@ class App extends React.Component {
   requestLogout = () => {};
 
   fileSelected = (fileId) => {
-    console.log('file selected', fileId);
-    gapi.client.sheets.spreadsheets.values.get({
-      spreadsheetId: fileId,
-      range: 'Sheet1'
+    console.log('file selected', fileId, gapi.client.sheets);
+    gapi.client.sheets.spreadsheets.get({
+      spreadsheetId: fileId
     }).then((response) => {
-      console.log('file loaded', response.result);
+      console.log('sheet loaded', response.result.sheets);
+      const spreadsheet = response.result;
+      if (spreadsheet.sheets.length < 1) {
+        throw new Error('Spreadsheet does not have sheets');
+      }
+      const sheetName = spreadsheet.sheets[0].properties.title;
+      return gapi.client.sheets.spreadsheets.values.get({
+        spreadsheetId: fileId,
+        range: sheetName
+      })
+    }).then((response) => {
+      console.log('data loaded', response.result);
       this.setState({
         file: response.result
       });
+    }, (reason) => {
+      console.error(reason.result.error.message);
     });
   };
 
