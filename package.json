@@ -31,7 +31,9 @@
   "scripts": {
     "dev": "webpack --progress --colors --watch",
     "build": "webpack",
-    "test": "jest"
+    "test": "npm run test:source && npm run test:built",
+    "test:built": "npm run build",
+    "test:source": "jest"
   },
   "author": "David Cox <losttime.shuffle@gmail.com>",
   "license": "UNLICENSED"
