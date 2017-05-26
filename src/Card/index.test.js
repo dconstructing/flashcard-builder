@@ -78,6 +78,17 @@ describe('interactions', () => {
     expect(front2.prop('hidden')).toBe(true);
     expect(back2.prop('hidden')).toBe(false);
   });
+
+  test('tap card', () => {
+    expect.assertions(1);
+    const onClick = () => {
+      expect(true).toBeTruthy();
+    };
+    const card = shallow(
+      <Card data={['first', 'second']} onCardClicked={onClick} />
+    );
+    card.simulate('click');
+  });
 });
 
 describe('sad path', () => {
