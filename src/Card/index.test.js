@@ -61,6 +61,28 @@ describe('customizations', () => {
     const back = card.find('div.back').first();
     expect(back.html()).toBe('<div class="back"><p>second</p></div>');
   });
+
+  test('multiple data points on front', () => {
+    const card = shallow(
+      <Card
+        data={['first', 'second', 'third', 'fourth']}
+        frontTemplate="<p><span>{{col1}}</span><span>{{col2}}</span></p>"
+      />
+    );
+    const front = card.find('div.front').first();
+    expect(front.html()).toBe('<div class="front"><p><span>first</span><span>second</span></p></div>');
+  });
+
+  test('multiple data points on back', () => {
+    const card = shallow(
+      <Card
+        data={['first', 'second', 'third', 'fourth']}
+        backTemplate="<p><span>{{col3}}</span><span>{{col4}}</span></p>"
+      />
+    );
+    const back = card.find('div.back').first();
+    expect(back.html()).toBe('<div class="back" hidden=""><p><span>third</span><span>fourth</span></p></div>');
+  });
 });
 
 describe('interactions', () => {
