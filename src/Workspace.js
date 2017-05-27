@@ -4,6 +4,7 @@ import gapi from 'gapi';
 import FlatButton from 'material-ui/FlatButton';
 
 import Card from './Card';
+import Cards from './Cards';
 import Selector from './Selector';
 
 const workspaceStyle = {
@@ -41,7 +42,6 @@ class Workspace extends React.Component {
       frontTemplate: '<p>{{col1}}</p>',
       backTemplate: '<p>{{col2}}</p>',
       templateDrawerOpen: false,
-      cardIndex: 0,
       cardFresh: true,
       cardWidth: 0,
       cardHeight: 0
@@ -106,31 +106,8 @@ class Workspace extends React.Component {
     });
   }
 
-  onPreviousCard = (event) => {
-    var newIndex = this.state.cardIndex - 1;
-    if (newIndex < 0) {
-      newIndex = this.props.file.values.length - 1;
-    }
-    this.setState({
-      cardIndex: newIndex,
-      cardFres: true
-    });
-  }
-
-  onNextCard = (event) => {
-    var newIndex = this.state.cardIndex + 1;
-    if (newIndex >= this.props.file.values.length) {
-      newIndex = 0;
-    }
-    this.setState({
-      cardIndex: newIndex,
-      cardFresh: true
-    });
-  }
-
   render() {
     const cards = this.props.file ? this.props.file.values || [] : [];
-    const card = cards[this.state.cardIndex];
     const cardStyle = {
       border: '1px solid black',
       height: this.state.cardHeight,
@@ -141,12 +118,11 @@ class Workspace extends React.Component {
         id="workspace"
         style={workspaceStyle}
       >
-        <div>
+        <Cards>
           {
-            cards.length > 0
-            ?
-            <div>
-              <Card
+            cards.map((card, i) => {
+              return <Card
+                key={i}
                 style={cardStyle}
                 data={card}
                 front={this.state.cardFresh}
@@ -154,21 +130,9 @@ class Workspace extends React.Component {
                 backTemplate={this.state.backTemplate}
                 onCardClicked={this.cardClicked}
               />
-              <FlatButton
-                label="previous"
-                primary={true}
-                onClick={this.onPreviousCard}
-              />
-              <FlatButton
-                label="next"
-                primary={true}
-                onClick={this.onNextCard}
-              />
-            </div>
-            :
-            <p>No cards found</p>
+            })
           }
-        </div>
+        </Cards>
         <div style={templateDrawerStyle}>
           {
             this.state.templateDrawerOpen
