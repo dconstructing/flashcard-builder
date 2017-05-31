@@ -37,12 +37,10 @@ class Cards extends React.Component {
         {visible}
         <FlatButton
           label="previous"
-          primary={true}
           onClick={this.onPreviousCard}
         />
         <FlatButton
           label="next"
-          primary={true}
           onClick={this.onNextCard}
         />
       </div>

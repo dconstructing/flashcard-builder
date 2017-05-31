@@ -1,6 +1,7 @@
 import React from 'react';
 import Mustache from 'mustache';
 import { Parser } from 'html-to-react';
+import Paper from 'material-ui/Paper';
 
 class Card extends React.Component {
   props: {
@@ -28,8 +29,9 @@ class Card extends React.Component {
     const backHtml = this.htmlToReactParser.parse(Mustache.render(this.props.backTemplate, cardData));
 
     return(
-      <div
+      <Paper
         style={this.props.style}
+        zDepth={2}
         onClick={this.props.onCardClicked}
       >
         <div
@@ -44,7 +46,7 @@ class Card extends React.Component {
         >
           {backHtml}
         </div>
-      </div>
+      </Paper>
     );
   }
 }
