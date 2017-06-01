@@ -30,7 +30,8 @@
   "scripts": {
     "dev": "webpack --progress --colors --watch",
     "build": "webpack",
-    "test": "npm run test:source && npm run test:built",
+    "flow": "flow",
+    "test": "npm run test:source && npm run flow && npm run test:built",
     "test:built": "npm run build",
     "test:source": "jest"
   },

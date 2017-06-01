@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import Mustache from 'mustache';
 import { Parser } from 'html-to-react';

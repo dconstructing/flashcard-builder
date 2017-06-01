@@ -1,19 +1,25 @@
+// @flow
+declare type GoogleClient = {
+  listSpreadsheets: () => Promise<any>,
+  loadFileData: (fileId: string) => Promise<any>,
+};
+
 const CLIENT_ID = '594524984428-ri54vus01s2c57iqp2i8cmr5l67n9g2s.apps.googleusercontent.com';
 const SCOPES = [
   'https://www.googleapis.com/auth/spreadsheets.readonly',
   'https://www.googleapis.com/auth/drive.metadata.readonly'
 ];
 
-const checkAuth = () => {
+const checkAuth = (): Promise<any> => {
   console.log('checking Google Auth');
   return gapi.auth.authorize({
     'client_id': CLIENT_ID,
     'scope': SCOPES.join(' '),
     'immediate': true
   });
-  };
+};
 
-const loadFiles = () => {
+const loadFiles = (): Promise<any> => {
   console.log('loading files');
   return gapi.client.drive.files.list({
     q: 'mimeType="application/vnd.google-apps.spreadsheet"'
@@ -21,7 +27,7 @@ const loadFiles = () => {
   });
 };
 
-const listSpreadsheets = () => {
+const listSpreadsheets = (): Promise<any> => {
   return checkAuth().then((authResult) => {
     if (authResult.error) {
       throw new Error(authResult.error);
@@ -36,7 +42,7 @@ const listSpreadsheets = () => {
   });
 };
 
-const loadFileData = (fileId) => {
+const loadFileData = (fileId: string): Promise<any> => {
   return gapi.client.sheets.spreadsheets.get({
     spreadsheetId: fileId
   }).then((request) => {
@@ -45,7 +51,7 @@ const loadFileData = (fileId) => {
     if (spreadsheet.sheets.length < 1) {
       throw new Error('Spreadsheet does not have sheets');
     }
-    const sheetName = spreadsheet.sheets[0].properties.title;
+    const sheetName: string = spreadsheet.sheets[0].properties.title;
     return gapi.client.sheets.spreadsheets.values.get({
       spreadsheetId: fileId,
       range: sheetName
@@ -58,16 +64,16 @@ const loadFileData = (fileId) => {
   });
 };
 
-const loadDriveApi = () => {
+const loadDriveApi = (): Promise<any> => {
   return gapi.client.load('drive', 'v3');
 };
 
-const loadSheetsApi = () => {
+const loadSheetsApi = (): Promise<any> => {
   var discoveryUrl = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
   return gapi.client.load(discoveryUrl);
 };
 
-const load = () => {
+const load = (): Promise<GoogleClient> => {
   return new Promise((resolve, reject) => {
     gapi.load('client', () => {
       console.log('google client loading');

@@ -16248,6 +16248,12 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var googleClient = void 0;
+_googleClient2.default.load().then(function (googleClient) {
+  console.log('google client loaded', googleClient);
+  googleClient = googleClient;
+});
+
 var FilePickerGoogleDrive = function (_React$Component) {
   _inherits(FilePickerGoogleDrive, _React$Component);
 
@@ -16268,15 +16274,10 @@ var FilePickerGoogleDrive = function (_React$Component) {
       files: [],
       open: false,
       selectedFileId: null
-    }, _this.componentDidMount = function () {
-      _googleClient2.default.load().then(function (googleClient) {
-        console.log('google client loaded', googleClient);
-        _this.googleClient = googleClient;
-      });
     }, _this.handleButtonClick = function (event) {
       console.log('do google drive stuff', event);
       event.preventDefault();
-      _this.googleClient.listSpreadsheets().then(function (files) {
+      googleClient.listSpreadsheets().then(function (files) {
         _this.setState({
           files: files
         });
@@ -16290,7 +16291,7 @@ var FilePickerGoogleDrive = function (_React$Component) {
         open: false,
         selectedFileId: value
       });
-      _this.googleClient.loadFileData(value).then(function (data) {
+      googleClient.loadFileData(value).then(function (data) {
         _this.props.onDataChange(data);
       });
     }, _this.handleRequestClose = function () {
@@ -16508,13 +16509,17 @@ var Surface = function (_React$Component) {
         cardFresh: !_this.state.cardFresh
       });
     }, _this.frontTemplateChanged = function (event) {
-      _this.setState({
-        templateFront: event.target.value
-      });
+      if (event.target instanceof HTMLInputElement) {
+        _this.setState({
+          templateFront: event.target.value
+        });
+      }
     }, _this.backTemplateChanged = function (event) {
-      _this.setState({
-        templateBack: event.target.value
-      });
+      if (event.target instanceof HTMLInputElement) {
+        _this.setState({
+          templateBack: event.target.value
+        });
+      }
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
@@ -16686,7 +16691,10 @@ exports.default = Surface;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+
 var CLIENT_ID = '594524984428-ri54vus01s2c57iqp2i8cmr5l67n9g2s.apps.googleusercontent.com';
+
 var SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly', 'https://www.googleapis.com/auth/drive.metadata.readonly'];
 
 var checkAuth = function checkAuth() {

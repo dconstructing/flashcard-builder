@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import Divider from 'material-ui/Divider';
 import Drawer from 'material-ui/Drawer';

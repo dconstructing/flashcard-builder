@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
@@ -6,12 +7,25 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import googleClientLoader from '../lib/googleClient';
 
-class FilePickerGoogleDrive extends React.Component {
-  props: {
-    clientId: string,
-    onDataChange: (Array<Array<string>>) => {}
-  };
-  
+let googleClient;
+googleClientLoader.load().then((googleClient) => {
+  console.log('google client loaded', googleClient);
+  googleClient = googleClient;
+});
+
+type DefaultProps = void;
+type Props = {
+  onDataChange: (Array<Array<string>>) => void
+};
+type State = {
+  anchor?: ?EventTarget,
+  authed: boolean,
+  files: Array<any>,
+  open: boolean,
+  selectedFileId?: ?string,
+};
+
+class FilePickerGoogleDrive extends React.Component<DefaultProps, Props, State> {
   state = {
     anchor: null,
     authed: false,
@@ -20,17 +34,10 @@ class FilePickerGoogleDrive extends React.Component {
     selectedFileId: null,
   };
 
-  componentDidMount = () => {
-    googleClientLoader.load().then((googleClient) => {
-      console.log('google client loaded', googleClient);
-      this.googleClient = googleClient;
-    });
-  };
-  
-  handleButtonClick = (event) => {
+  handleButtonClick = (event: Event) => {
     console.log('do google drive stuff', event);
     event.preventDefault();
-    this.googleClient.listSpreadsheets().then((files) => {
+    googleClient.listSpreadsheets().then((files) => {
       this.setState({
         files: files,
       });
@@ -41,12 +48,12 @@ class FilePickerGoogleDrive extends React.Component {
     });
   };
 
-  handleFileSelected = (event, value) => {
+  handleFileSelected = (event: Event, value: string) => {
     this.setState({
       open: false,
       selectedFileId: value
     });
-    this.googleClient.loadFileData(value).then((data) => {
+    googleClient.loadFileData(value).then((data) => {
       this.props.onDataChange(data);
     });
   };

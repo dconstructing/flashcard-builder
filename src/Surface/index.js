@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import Divider from 'material-ui/Divider';
 import Drawer from 'material-ui/Drawer';
@@ -64,6 +65,7 @@ class Surface extends React.Component {
     window.addEventListener("resize", this.updateDimensions);
     this.updateDimensions();
   }
+
   componentWillUnmount = () => {
     window.removeEventListener("resize", this.updateDimensions);
   }
@@ -100,7 +102,7 @@ class Surface extends React.Component {
     });
   };
 
-  handleDataChanged = (fileData) => {
+  handleDataChanged = (fileData: Array<Array<string>>): void => {
     this.setState({
       data: fileData,
     });
@@ -112,16 +114,20 @@ class Surface extends React.Component {
     });
   };
 
-  frontTemplateChanged = (event) => {
-    this.setState({
-      templateFront: event.target.value
-    });
+  frontTemplateChanged = (event: Event) => {
+    if (event.target instanceof HTMLInputElement) {
+      this.setState({
+        templateFront: event.target.value
+      });
+    }
   }
 
-  backTemplateChanged = (event) => {
-    this.setState({
-      templateBack: event.target.value
-    });
+  backTemplateChanged = (event: Event) => {
+    if (event.target instanceof HTMLInputElement) {
+      this.setState({
+        templateBack: event.target.value
+      });
+    }
   }
 
   render() {
