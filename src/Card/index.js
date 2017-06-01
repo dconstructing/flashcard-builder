@@ -3,6 +3,8 @@ import Mustache from 'mustache';
 import { Parser } from 'html-to-react';
 import Paper from 'material-ui/Paper';
 
+const htmlToReactParser = new Parser();
+
 class Card extends React.Component {
   props: {
     style?: Object,
@@ -13,11 +15,11 @@ class Card extends React.Component {
     onCardClicked?: () => void
   };
 
-  htmlToReactParser = new Parser();
-
-  constructor(props) {
-    super(props);
-  }
+  static defaultProps = {
+    front: true,
+    backTemplate: '<p>{{col2}}</p>',
+    frontTemplate: '<p>{{col1}}</p>'
+  };
 
   render() {
     const cardData = {};
@@ -25,8 +27,8 @@ class Card extends React.Component {
       cardData['col' + (i + 1)] = this.props.data[i];
     }
 
-    const frontHtml = this.htmlToReactParser.parse(Mustache.render(this.props.frontTemplate, cardData));
-    const backHtml = this.htmlToReactParser.parse(Mustache.render(this.props.backTemplate, cardData));
+    const frontHtml = htmlToReactParser.parse(Mustache.render(this.props.frontTemplate, cardData));
+    const backHtml = htmlToReactParser.parse(Mustache.render(this.props.backTemplate, cardData));
 
     return(
       <Paper
@@ -50,11 +52,5 @@ class Card extends React.Component {
     );
   }
 }
-
-Card.defaultProps = {
-  front: true,
-  backTemplate: '<p>{{col2}}</p>',
-  frontTemplate: '<p>{{col1}}</p>'
-};
 
 export default Card;

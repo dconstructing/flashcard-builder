@@ -15944,10 +15944,10 @@ var muiTheme = (0, _getMuiTheme2.default)({
 var App2 = function (_React$Component) {
   _inherits(App2, _React$Component);
 
-  function App2(props) {
+  function App2() {
     _classCallCheck(this, App2);
 
-    return _possibleConstructorReturn(this, (App2.__proto__ || Object.getPrototypeOf(App2)).call(this, props));
+    return _possibleConstructorReturn(this, (App2.__proto__ || Object.getPrototypeOf(App2)).apply(this, arguments));
   }
 
   _createClass(App2, [{
@@ -16034,16 +16034,15 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var htmlToReactParser = new _htmlToReact.Parser();
+
 var Card = function (_React$Component) {
   _inherits(Card, _React$Component);
 
-  function Card(props) {
+  function Card() {
     _classCallCheck(this, Card);
 
-    var _this = _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).call(this, props));
-
-    _this.htmlToReactParser = new _htmlToReact.Parser();
-    return _this;
+    return _possibleConstructorReturn(this, (Card.__proto__ || Object.getPrototypeOf(Card)).apply(this, arguments));
   }
 
   _createClass(Card, [{
@@ -16054,8 +16053,8 @@ var Card = function (_React$Component) {
         cardData['col' + (i + 1)] = this.props.data[i];
       }
 
-      var frontHtml = this.htmlToReactParser.parse(_mustache2.default.render(this.props.frontTemplate, cardData));
-      var backHtml = this.htmlToReactParser.parse(_mustache2.default.render(this.props.backTemplate, cardData));
+      var frontHtml = htmlToReactParser.parse(_mustache2.default.render(this.props.frontTemplate, cardData));
+      var backHtml = htmlToReactParser.parse(_mustache2.default.render(this.props.backTemplate, cardData));
 
       return _react2.default.createElement(
         _Paper2.default,
@@ -16092,7 +16091,6 @@ Card.defaultProps = {
   backTemplate: '<p>{{col2}}</p>',
   frontTemplate: '<p>{{col1}}</p>'
 };
-
 exports.default = Card;
 
 /***/ }),
@@ -16127,12 +16125,20 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Cards = function (_React$Component) {
   _inherits(Cards, _React$Component);
 
-  function Cards(props) {
+  function Cards() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
     _classCallCheck(this, Cards);
 
-    var _this = _possibleConstructorReturn(this, (Cards.__proto__ || Object.getPrototypeOf(Cards)).call(this, props));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
 
-    _this.onPreviousCard = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Cards.__proto__ || Object.getPrototypeOf(Cards)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+      index: 0
+    }, _this.onPreviousCard = function () {
       var newIndex = _this.state.index - 1;
       if (newIndex < 0) {
         newIndex = _react2.default.Children.count(_this.props.children) - 1;
@@ -16140,9 +16146,7 @@ var Cards = function (_React$Component) {
       _this.setState({
         index: newIndex
       });
-    };
-
-    _this.onNextCard = function () {
+    }, _this.onNextCard = function () {
       var newIndex = _this.state.index + 1;
       if (newIndex >= _react2.default.Children.count(_this.props.children)) {
         newIndex = 0;
@@ -16150,12 +16154,7 @@ var Cards = function (_React$Component) {
       _this.setState({
         index: newIndex
       });
-    };
-
-    _this.state = {
-      index: 0
-    };
-    return _this;
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(Cards, [{
@@ -16252,19 +16251,29 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var FilePickerGoogleDrive = function (_React$Component) {
   _inherits(FilePickerGoogleDrive, _React$Component);
 
-  function FilePickerGoogleDrive(props) {
+  function FilePickerGoogleDrive() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
     _classCallCheck(this, FilePickerGoogleDrive);
 
-    var _this = _possibleConstructorReturn(this, (FilePickerGoogleDrive.__proto__ || Object.getPrototypeOf(FilePickerGoogleDrive)).call(this, props));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
 
-    _this.componentDidMount = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = FilePickerGoogleDrive.__proto__ || Object.getPrototypeOf(FilePickerGoogleDrive)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+      anchor: null,
+      authed: false,
+      files: [],
+      open: false,
+      selectedFileId: null
+    }, _this.componentDidMount = function () {
       _googleClient2.default.load().then(function (googleClient) {
         console.log('google client loaded', googleClient);
         _this.googleClient = googleClient;
       });
-    };
-
-    _this.handleButtonClick = function (event) {
+    }, _this.handleButtonClick = function (event) {
       console.log('do google drive stuff', event);
       event.preventDefault();
       _this.googleClient.listSpreadsheets().then(function (files) {
@@ -16276,9 +16285,7 @@ var FilePickerGoogleDrive = function (_React$Component) {
         anchor: event.currentTarget,
         open: true
       });
-    };
-
-    _this.handleFileSelected = function (event, value) {
+    }, _this.handleFileSelected = function (event, value) {
       _this.setState({
         open: false,
         selectedFileId: value
@@ -16286,22 +16293,11 @@ var FilePickerGoogleDrive = function (_React$Component) {
       _this.googleClient.loadFileData(value).then(function (data) {
         _this.props.onDataChange(data);
       });
-    };
-
-    _this.handleRequestClose = function () {
+    }, _this.handleRequestClose = function () {
       _this.setState({
         open: false
       });
-    };
-
-    _this.state = {
-      anchor: null,
-      authed: false,
-      files: [],
-      open: false,
-      selectedFileId: null
-    };
-    return _this;
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(FilePickerGoogleDrive, [{
@@ -16451,21 +16447,31 @@ var templateEditorStyle = {
 var Surface = function (_React$Component) {
   _inherits(Surface, _React$Component);
 
-  function Surface(props) {
+  function Surface() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
     _classCallCheck(this, Surface);
 
-    var _this = _possibleConstructorReturn(this, (Surface.__proto__ || Object.getPrototypeOf(Surface)).call(this, props));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
 
-    _this.componentDidMount = function () {
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Surface.__proto__ || Object.getPrototypeOf(Surface)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+      cardFresh: true,
+      cardHeight: 0,
+      cardWidth: 0,
+      data: [],
+      drawerOpen: true,
+      templateBack: '<p>{{col2}}</p>',
+      templateFront: '<p>{{col1}}</p>'
+    }, _this.componentDidMount = function () {
       window.addEventListener("resize", _this.updateDimensions);
       _this.updateDimensions();
-    };
-
-    _this.componentWillUnmount = function () {
+    }, _this.componentWillUnmount = function () {
       window.removeEventListener("resize", _this.updateDimensions);
-    };
-
-    _this.updateDimensions = function () {
+    }, _this.updateDimensions = function () {
       var workspace = document.getElementById('workspace');
       var height;
       var width;
@@ -16489,48 +16495,27 @@ var Surface = function (_React$Component) {
           cardHeight: height
         });
       }
-    };
-
-    _this.handleMenu = function () {
+    }, _this.handleMenu = function () {
       _this.setState({
         drawerOpen: !_this.state.drawerOpen
       });
-    };
-
-    _this.handleDataChanged = function (fileData) {
+    }, _this.handleDataChanged = function (fileData) {
       _this.setState({
         data: fileData
       });
-    };
-
-    _this.handleCardClicked = function () {
+    }, _this.handleCardClicked = function () {
       _this.setState({
         cardFresh: !_this.state.cardFresh
       });
-    };
-
-    _this.frontTemplateChanged = function (event) {
+    }, _this.frontTemplateChanged = function (event) {
       _this.setState({
         templateFront: event.target.value
       });
-    };
-
-    _this.backTemplateChanged = function (event) {
+    }, _this.backTemplateChanged = function (event) {
       _this.setState({
         templateBack: event.target.value
       });
-    };
-
-    _this.state = {
-      cardFresh: true,
-      cardHeight: 0,
-      cardWidth: 0,
-      data: [],
-      drawerOpen: true,
-      templateBack: '<p>{{col2}}</p>',
-      templateFront: '<p>{{col1}}</p>'
-    };
-    return _this;
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(Surface, [{
@@ -16688,8 +16673,6 @@ var Surface = function (_React$Component) {
 
   return Surface;
 }(_react2.default.Component);
-
-Surface.defaultProps = {};
 
 exports.default = Surface;
 

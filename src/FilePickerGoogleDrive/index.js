@@ -11,19 +11,15 @@ class FilePickerGoogleDrive extends React.Component {
     clientId: string,
     onDataChange: (Array<Array<string>>) => {}
   };
-
-  constructor(props) {
-    super(props);
-    
-    this.state = {
-      anchor: null,
-      authed: false,
-      files: [],
-      open: false,
-      selectedFileId: null,
-    };
-  }
   
+  state = {
+    anchor: null,
+    authed: false,
+    files: [],
+    open: false,
+    selectedFileId: null,
+  };
+
   componentDidMount = () => {
     googleClientLoader.load().then((googleClient) => {
       console.log('google client loaded', googleClient);

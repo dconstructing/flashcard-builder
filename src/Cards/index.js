@@ -2,13 +2,10 @@ import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 
 class Cards extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      index: 0
-    };
-  }
-  
+  state = {
+    index: 0,
+  };
+
   onPreviousCard = () => {
     var newIndex = this.state.index - 1;
     if (newIndex < 0) {

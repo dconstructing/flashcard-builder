@@ -50,23 +50,16 @@ const templateEditorStyle = {
 };
 
 class Surface extends React.Component {
-  props: {
+  state = {
+    cardFresh: true,
+    cardHeight: 0,
+    cardWidth: 0,
+    data: [],
+    drawerOpen: true,
+    templateBack: '<p>{{col2}}</p>',
+    templateFront: '<p>{{col1}}</p>',
   };
 
-  constructor(props) {
-    super(props);
-    
-    this.state = {
-      cardFresh: true,
-      cardHeight: 0,
-      cardWidth: 0,
-      data: [],
-      drawerOpen: true,
-      templateBack: '<p>{{col2}}</p>',
-      templateFront: '<p>{{col1}}</p>',
-    };
-  }
-  
   componentDidMount = () => {
     window.addEventListener("resize", this.updateDimensions);
     this.updateDimensions();
@@ -239,8 +232,5 @@ class Surface extends React.Component {
     );
   }
 }
-
-Surface.defaultProps = {
-};
 
 export default Surface;

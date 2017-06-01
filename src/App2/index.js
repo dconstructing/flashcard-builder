@@ -12,13 +12,6 @@ const muiTheme = getMuiTheme({
 });
 
 class App2 extends React.Component {
-  props: {
-  };
-
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <MuiThemeProvider muiTheme={muiTheme}>
