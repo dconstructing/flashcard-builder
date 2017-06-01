@@ -18,9 +18,11 @@ const surfaceStyle = {
 };
 
 const headerStyle = {
+  color: '#666',
   display: 'flex',
   fontSize: '2em',
   justifyContent: 'space-between',
+  textShadow: '#aaa 1px 1px',
 };
 
 const workspaceStyle = {
@@ -29,6 +31,12 @@ const workspaceStyle = {
   alignItems: 'center',
   flexGrow: 1,
   width: '100%',
+};
+
+const footerStyle = {
+  color: '#666',
+  padding: '0px 15px',
+  textShadow: '#aaa 1px 1px',
 };
 
 const drawerStyle = {
@@ -142,12 +150,12 @@ class Surface extends React.Component {
           id="header"
           style={headerStyle}
         >
-          <span>Flashcard Builder</span>
+          <span style={{padding: '10px 15px'}}>Flashcard Builder</span>
           <IconButton
             tooltip="menu"
             onTouchTap={this.handleMenu}
           >
-            <NavigationMenu />
+            <NavigationMenu color="#666" />
           </IconButton>
         </div>
         <div
@@ -168,16 +176,21 @@ class Surface extends React.Component {
             })}
           </Cards>
         </div>
-        <div id="footer">
+        <div
+          id="footer"
+          style={footerStyle}
+        >
           Donate with:
           <FlatButton
             href="https://www.paypal.me/davidgawaincox"
             label="PayPal"
+            style={{color: '#666'}}
           />
           -
           <FlatButton
             href="https://cash.me/$davidgawaincox"
             label="Square Cash"
+            style={{color: '#666'}}
           />
         </div>
         <Drawer

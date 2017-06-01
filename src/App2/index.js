@@ -3,7 +3,13 @@ import Divider from 'material-ui/Divider';
 import Drawer from 'material-ui/Drawer';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+
 import Surface from '../Surface';
+
+const muiTheme = getMuiTheme({
+  fontFamily: 'Open Sans',
+});
 
 class App2 extends React.Component {
   props: {
@@ -15,7 +21,7 @@ class App2 extends React.Component {
 
   render() {
     return (
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={muiTheme}>
         <Surface />
       </MuiThemeProvider>
     );
