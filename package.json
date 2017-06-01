@@ -6,6 +6,7 @@
   "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.17.0",
+    "babel-eslint": "^7.2.3",
     "babel-jest": "^20.0.3",
     "babel-loader": "^7.0.0",
     "babel-plugin-transform-class-properties": "^6.16.0",
@@ -13,6 +14,9 @@
     "babel-preset-latest": "^6.24.1",
     "babel-preset-react": "^6.16.0",
     "enzyme": "^2.8.2",
+    "eslint": "^3.19.0",
+    "eslint-plugin-flowtype": "^2.34.0",
+    "eslint-plugin-react": "^7.0.1",
     "flow-bin": "^0.47.0",
     "html-to-react": "^1.2.1",
     "jest": "^20.0.4",
@@ -31,6 +35,7 @@
     "dev": "webpack --progress --colors --watch",
     "build": "webpack",
     "flow": "flow",
+    "lint": "eslint",
     "test": "npm run test:source && npm run flow && npm run test:built",
     "test:built": "npm run build",
     "test:source": "jest"

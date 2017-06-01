@@ -55,7 +55,7 @@ const loadFileData = (fileId: string): Promise<any> => {
     return gapi.client.sheets.spreadsheets.values.get({
       spreadsheetId: fileId,
       range: sheetName
-    })
+    });
   }).then((request) => {
     console.log('data loaded', request.result);
     return request.result.values;
@@ -74,7 +74,7 @@ const loadSheetsApi = (): Promise<any> => {
 };
 
 const load = (): Promise<GoogleClient> => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     gapi.load('client', () => {
       console.log('google client loading');
       resolve();

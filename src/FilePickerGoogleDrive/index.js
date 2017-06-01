@@ -8,9 +8,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import googleClientLoader from '../lib/googleClient';
 
 let googleClient;
-googleClientLoader.load().then((googleClient) => {
-  console.log('google client loaded', googleClient);
-  googleClient = googleClient;
+googleClientLoader.load().then((loadedGoogleClient) => {
+  console.log('google client loaded', loadedGoogleClient);
+  googleClient = loadedGoogleClient;
 });
 
 type DefaultProps = void;

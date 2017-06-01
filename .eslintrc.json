@@ -1,0 +1,45 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jest": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:flowtype/recommended",
+        "plugin:react/recommended"
+    ],
+    "globals": {
+        "gapi": false
+    },
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true,
+            "jsx": true
+        },
+        "sourceType": "module"
+    },
+    "plugins": [
+        "flowtype",
+        "react"
+    ],
+    "rules": {
+        "indent": [
+            "error",
+            "tab"
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ]
+    }
+}

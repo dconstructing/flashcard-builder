@@ -42,7 +42,7 @@ const footerStyle = {
 
 const drawerStyle = {
   backgroundColor: '#eee',
-}
+};
 
 const templateEditorStyle = {
   fontFamily: 'monospace',
@@ -62,12 +62,12 @@ class Surface extends React.Component {
   };
 
   componentDidMount = () => {
-    window.addEventListener("resize", this.updateDimensions);
+    window.addEventListener('resize', this.updateDimensions);
     this.updateDimensions();
   }
 
   componentWillUnmount = () => {
-    window.removeEventListener("resize", this.updateDimensions);
+    window.removeEventListener('resize', this.updateDimensions);
   }
 
   updateDimensions = () => {
@@ -171,7 +171,7 @@ class Surface extends React.Component {
                 frontTemplate={this.state.templateFront}
                 backTemplate={this.state.templateBack}
                 onCardClicked={this.handleCardClicked}
-              />
+              />;
             })}
           </Cards>
         </div>

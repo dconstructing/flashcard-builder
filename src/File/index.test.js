@@ -1,1 +1,1 @@
-test('nothing for now', () => {})
+test('nothing for now', () => {});
