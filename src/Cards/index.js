@@ -30,7 +30,10 @@ class Cards extends React.Component {
   }
 
   render() {
-    let content = <p>No cards found</p>
+    let content = <div>
+      <p>No cards found</p>
+      <p>Load a spreadsheet in the sidebar to generate cards</p>
+    </div>
     if (React.Children.count(this.props.children) > 0) {
       const visible = React.Children.toArray(this.props.children).slice(this.state.index, this.state.index + 1);
       content = <div>

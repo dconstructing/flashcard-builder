@@ -53,7 +53,7 @@ class Surface extends React.Component {
       cardHeight: 0,
       cardWidth: 0,
       data: [],
-      drawerOpen: false,
+      drawerOpen: true,
       templateBack: '<p>{{col2}}</p>',
       templateFront: '<p>{{col1}}</p>',
     };
@@ -127,7 +127,6 @@ class Surface extends React.Component {
     console.log('rendering surface');
     const cardStyle = {
       backgroundColor: '#eee',
-//      border: '1px solid black',
       boxSizing: 'border-box',
       height: this.state.cardHeight,
       padding: 10,
