@@ -28,12 +28,13 @@
     "react-safe-html": "^0.4.0",
     "react-tap-event-plugin": "^2.0.0",
     "react-test-renderer": "^15.5.4",
+    "rimraf": "^2.6.1",
     "source-map-loader": "^0.2.1",
     "webpack": "^2.6.0"
   },
   "scripts": {
     "dev": "webpack --progress --colors --watch",
-    "build": "webpack",
+    "build": "rimraf dist && webpack",
     "flow": "flow",
     "lint": "eslint",
     "test": "npm run test:source && npm run flow && npm run test:built",

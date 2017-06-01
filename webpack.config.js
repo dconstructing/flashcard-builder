@@ -1,8 +1,18 @@
+const webpack = require('webpack');
+
 module.exports = {
-  entry: "./src/index.jsx",
-  output: {
-    filename: "./dist/bundle.js",
+  entry: {
+    main: "./src/index.jsx"
   },
+  output: {
+    filename: "./dist/[name].js",
+  },
+  plugins: [
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: ({ resource }) => /node_modules/.test(resource)
+    })
+  ],
 
   // Enable sourcemaps for debugging webpack's output.
   devtool: "source-map",
