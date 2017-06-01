@@ -4,11 +4,7 @@ import MenuItem from 'material-ui/MenuItem';
 import Popover from 'material-ui/Popover';
 import RaisedButton from 'material-ui/RaisedButton';
 
-const CLIENT_ID = '594524984428-ri54vus01s2c57iqp2i8cmr5l67n9g2s.apps.googleusercontent.com';
-const SCOPES = [
-  'https://www.googleapis.com/auth/spreadsheets.readonly',
-  'https://www.googleapis.com/auth/drive.metadata.readonly'
-];
+import googleClientLoader from '../lib/googleClient';
 
 class FilePickerGoogleDrive extends React.Component {
   props: {
@@ -28,91 +24,35 @@ class FilePickerGoogleDrive extends React.Component {
     };
   }
   
+  componentDidMount = () => {
+    googleClientLoader.load().then((googleClient) => {
+      console.log('google client loaded', googleClient);
+      this.googleClient = googleClient;
+    });
+  };
+  
   handleButtonClick = (event) => {
     console.log('do google drive stuff', event);
     event.preventDefault();
-    gapi.load('client', this.checkGoogleAuth);
+    this.googleClient.listSpreadsheets().then((files) => {
+      this.setState({
+        files: files,
+      });
+    });
     this.setState({
       anchor: event.currentTarget,
       open: true,
     });
   };
-  
-  checkGoogleAuth = () => {
-    console.log('checking Google Auth', this);
-    gapi.auth.authorize({
-      'client_id': CLIENT_ID,
-      'scope': SCOPES.join(' '),
-      'immediate': true
-    }, this.handleAuthResult);
-  };
 
-  handleAuthResult = (authResult) => {
-    console.log('handling auth result', this);
-    if (authResult && !authResult.error) {
-      console.log('auth is good');
-      this.setState({
-        authed: true
-      });
-      Promise.all([this.loadDriveApi(), this.loadSheetsApi()]).then(() => {
-        this.loadFiles();
-      });
-    } else {
-      console.log('auth error', authResult);
-    }
-  };
-
-  loadDriveApi = () => {
-    return gapi.client.load('drive', 'v3');
-  };
-
-  loadSheetsApi = () => {
-    var discoveryUrl = 'https://sheets.googleapis.com/$discovery/rest?version=v4';
-    return gapi.client.load(discoveryUrl);
-  };
-
-  loadFiles = () => {
-    console.log('loading files');
-    gapi.client.drive.files.list({
-      q: 'mimeType="application/vnd.google-apps.spreadsheet"'
-      // fields: "nextPageToken, files(id, name)"
-    }).execute((response) => {
-      console.log('loaded files', response.files);
-      this.setState({
-        files: response.files
-      });
-    });
-  };
-  
-  loadFileData = (fileId) => {
-    console.log('file selected', fileId, gapi.client.sheets);
-    gapi.client.sheets.spreadsheets.get({
-      spreadsheetId: fileId
-    }).then((response) => {
-      console.log('sheet loaded', response.result.sheets);
-      const spreadsheet = response.result;
-      if (spreadsheet.sheets.length < 1) {
-        throw new Error('Spreadsheet does not have sheets');
-      }
-      const sheetName = spreadsheet.sheets[0].properties.title;
-      return gapi.client.sheets.spreadsheets.values.get({
-        spreadsheetId: fileId,
-        range: sheetName
-      })
-    }).then((response) => {
-      console.log('data loaded', response.result);
-      this.props.onDataChange(response.result.values);
-    }, (reason) => {
-      console.error(reason.result.error.message);
-    });
-  };
-  
   handleFileSelected = (event, value) => {
     this.setState({
       open: false,
       selectedFileId: value
     });
-    this.loadFileData(value);
+    this.googleClient.loadFileData(value).then((data) => {
+      this.props.onDataChange(data);
+    });
   };
   
   handleRequestClose = () => {
