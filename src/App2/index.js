@@ -7,17 +7,17 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import Surface from '../Surface';
 
 const muiTheme = getMuiTheme({
-  fontFamily: 'Open Sans',
+	fontFamily: 'Open Sans',
 });
 
 class App2 extends React.Component {
-  render() {
-    return (
-      <MuiThemeProvider muiTheme={muiTheme}>
-        <Surface />
-      </MuiThemeProvider>
-    );
-  }
+	render() {
+		return (
+			<MuiThemeProvider muiTheme={muiTheme}>
+				<Surface />
+			</MuiThemeProvider>
+		);
+	}
 }
 
 export default App2;
