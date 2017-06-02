@@ -113,7 +113,7 @@ class Surface extends React.Component {
 	};
 
 	frontTemplateChanged = (event: Event) => {
-		if (event.target instanceof HTMLInputElement) {
+		if (event.target instanceof HTMLTextAreaElement) {
 			this.setState({
 				templateFront: event.target.value
 			});
@@ -121,7 +121,7 @@ class Surface extends React.Component {
 	}
 
 	backTemplateChanged = (event: Event) => {
-		if (event.target instanceof HTMLInputElement) {
+		if (event.target instanceof HTMLTextAreaElement) {
 			this.setState({
 				templateBack: event.target.value
 			});

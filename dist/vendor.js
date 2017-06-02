@@ -10158,6 +10158,26 @@ exports.default = List;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _MenuItem = __webpack_require__(322);
+
+var _MenuItem2 = _interopRequireDefault(_MenuItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _MenuItem2.default;
+
+/***/ }),
+/* 156 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 Object.defineProperty(exports, "__esModule", {
@@ -10232,7 +10252,7 @@ var _List = __webpack_require__(154);
 
 var _List2 = _interopRequireDefault(_List);
 
-var _menuUtils = __webpack_require__(323);
+var _menuUtils = __webpack_require__(324);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10856,26 +10876,6 @@ process.env.NODE_ENV !== "production" ? Menu.propTypes = {
 } : void 0;
 exports.default = Menu;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 156 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = undefined;
-
-var _MenuItem = __webpack_require__(324);
-
-var _MenuItem2 = _interopRequireDefault(_MenuItem);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _MenuItem2.default;
 
 /***/ }),
 /* 157 */
@@ -29070,77 +29070,6 @@ exports.default = NestedList;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.MenuItem = exports.Menu = undefined;
-
-var _Menu2 = __webpack_require__(155);
-
-var _Menu3 = _interopRequireDefault(_Menu2);
-
-var _MenuItem2 = __webpack_require__(156);
-
-var _MenuItem3 = _interopRequireDefault(_MenuItem2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.Menu = _Menu3.default;
-exports.MenuItem = _MenuItem3.default;
-exports.default = _Menu3.default;
-
-/***/ }),
-/* 323 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.HotKeyHolder = undefined;
-
-var _classCallCheck2 = __webpack_require__(5);
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = __webpack_require__(7);
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var HotKeyHolder = exports.HotKeyHolder = function () {
-  function HotKeyHolder() {
-    var _this = this;
-
-    (0, _classCallCheck3.default)(this, HotKeyHolder);
-
-    this.clear = function () {
-      _this.timerId = null;
-      _this.lastKeys = null;
-    };
-  }
-
-  (0, _createClass3.default)(HotKeyHolder, [{
-    key: 'append',
-    value: function append(key) {
-      clearTimeout(this.timerId);
-      this.timerId = setTimeout(this.clear, 500);
-      return this.lastKeys = (this.lastKeys || '') + key;
-    }
-  }]);
-  return HotKeyHolder;
-}();
-
-/***/ }),
-/* 324 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 Object.defineProperty(exports, "__esModule", {
@@ -29207,7 +29136,7 @@ var _ListItem = __webpack_require__(320);
 
 var _ListItem2 = _interopRequireDefault(_ListItem);
 
-var _Menu = __webpack_require__(155);
+var _Menu = __webpack_require__(156);
 
 var _Menu2 = _interopRequireDefault(_Menu);
 
@@ -29548,6 +29477,77 @@ process.env.NODE_ENV !== "production" ? MenuItem.propTypes = {
 } : void 0;
 exports.default = MenuItem;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 323 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.MenuItem = exports.Menu = undefined;
+
+var _Menu2 = __webpack_require__(156);
+
+var _Menu3 = _interopRequireDefault(_Menu2);
+
+var _MenuItem2 = __webpack_require__(155);
+
+var _MenuItem3 = _interopRequireDefault(_MenuItem2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.Menu = _Menu3.default;
+exports.MenuItem = _MenuItem3.default;
+exports.default = _Menu3.default;
+
+/***/ }),
+/* 324 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.HotKeyHolder = undefined;
+
+var _classCallCheck2 = __webpack_require__(5);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(7);
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var HotKeyHolder = exports.HotKeyHolder = function () {
+  function HotKeyHolder() {
+    var _this = this;
+
+    (0, _classCallCheck3.default)(this, HotKeyHolder);
+
+    this.clear = function () {
+      _this.timerId = null;
+      _this.lastKeys = null;
+    };
+  }
+
+  (0, _createClass3.default)(HotKeyHolder, [{
+    key: 'append',
+    value: function append(key) {
+      clearTimeout(this.timerId);
+      this.timerId = setTimeout(this.clear, 500);
+      return this.lastKeys = (this.lastKeys || '') + key;
+    }
+  }]);
+  return HotKeyHolder;
+}();
 
 /***/ }),
 /* 325 */
