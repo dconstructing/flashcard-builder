@@ -7,12 +7,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import googleClientLoader from '../lib/googleClient';
 
-let googleClient;
-googleClientLoader.load().then((loadedGoogleClient) => {
-	console.log('google client loaded', loadedGoogleClient);
-	googleClient = loadedGoogleClient;
-});
-
 type DefaultProps = void;
 type Props = {
 	onDataChange: (Array<Array<string>>) => void
@@ -26,6 +20,7 @@ type State = {
 };
 
 class FilePickerGoogleDrive extends React.Component<DefaultProps, Props, State> {
+	googleClient: any;
 	state = {
 		anchor: null,
 		authed: false,
@@ -34,13 +29,33 @@ class FilePickerGoogleDrive extends React.Component<DefaultProps, Props, State> 
 		selectedFileId: null,
 	};
 
+	constructor(props: Props) {
+		super(props);
+		this.googleClient = null;
+		googleClientLoader.load().then((loadedGoogleClient) => {
+			console.log('google client loaded', loadedGoogleClient);
+			this.googleClient = loadedGoogleClient;
+
+			const selectedFile = localStorage.getItem('selectedFile');
+			if (selectedFile) {
+				const fileJson = JSON.parse(selectedFile);
+				this.setState({
+					selectedFileId: fileJson.id,
+				});
+				this.loadFileData(fileJson.id);
+			}
+		});
+	};
+
 	handleButtonClick = (event: Event) => {
 		console.log('do google drive stuff', event);
 		event.preventDefault();
-		googleClient.listSpreadsheets().then((files) => {
-			this.setState({
-				files: files,
-			});
+		this.googleClient.listSpreadsheets().then((files) => {
+			if (files) {
+				this.setState({
+					files: files,
+				});
+			}
 		});
 		this.setState({
 			anchor: event.currentTarget,
@@ -53,13 +68,24 @@ class FilePickerGoogleDrive extends React.Component<DefaultProps, Props, State> 
 			open: false,
 			selectedFileId: value
 		});
-		googleClient.loadFileData(value).then((data) => {
-			this.props.onDataChange(data);
-		});
+		this.loadFileData(value);
+		localStorage.setItem('selectedFile', JSON.stringify({
+			id: value,
+			provider: 'google',
+		}));
 	};
-			handleRequestClose = () => {
+
+	handleRequestClose = () => {
 		this.setState({
 			open: false
+		});
+	};
+
+	loadFileData = (fileId: string) => {
+		this.googleClient.loadFileData(fileId).then((data) => {
+			if (data) {
+				this.props.onDataChange(data);
+			}
 		});
 	};
 

@@ -289,11 +289,11 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Menu = __webpack_require__(326);
+var _Menu = __webpack_require__(327);
 
 var _Menu2 = _interopRequireDefault(_Menu);
 
-var _MenuItem = __webpack_require__(158);
+var _MenuItem = __webpack_require__(157);
 
 var _MenuItem2 = _interopRequireDefault(_MenuItem);
 
@@ -317,57 +317,79 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var googleClient = void 0;
-_googleClient2.default.load().then(function (loadedGoogleClient) {
-	console.log('google client loaded', loadedGoogleClient);
-	googleClient = loadedGoogleClient;
-});
-
 var FilePickerGoogleDrive = function (_React$Component) {
 	_inherits(FilePickerGoogleDrive, _React$Component);
 
-	function FilePickerGoogleDrive() {
-		var _ref;
-
-		var _temp, _this, _ret;
-
+	function FilePickerGoogleDrive(props) {
 		_classCallCheck(this, FilePickerGoogleDrive);
 
-		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-			args[_key] = arguments[_key];
-		}
+		var _this = _possibleConstructorReturn(this, (FilePickerGoogleDrive.__proto__ || Object.getPrototypeOf(FilePickerGoogleDrive)).call(this, props));
 
-		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = FilePickerGoogleDrive.__proto__ || Object.getPrototypeOf(FilePickerGoogleDrive)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+		_this.state = {
 			anchor: null,
 			authed: false,
 			files: [],
 			open: false,
 			selectedFileId: null
-		}, _this.handleButtonClick = function (event) {
+		};
+
+		_this.handleButtonClick = function (event) {
 			console.log('do google drive stuff', event);
 			event.preventDefault();
-			googleClient.listSpreadsheets().then(function (files) {
-				_this.setState({
-					files: files
-				});
+			_this.googleClient.listSpreadsheets().then(function (files) {
+				if (files) {
+					_this.setState({
+						files: files
+					});
+				}
 			});
 			_this.setState({
 				anchor: event.currentTarget,
 				open: true
 			});
-		}, _this.handleFileSelected = function (event, value) {
+		};
+
+		_this.handleFileSelected = function (event, value) {
 			_this.setState({
 				open: false,
 				selectedFileId: value
 			});
-			googleClient.loadFileData(value).then(function (data) {
-				_this.props.onDataChange(data);
-			});
-		}, _this.handleRequestClose = function () {
+			_this.loadFileData(value);
+			localStorage.setItem('selectedFile', JSON.stringify({
+				id: value,
+				provider: 'google'
+			}));
+		};
+
+		_this.handleRequestClose = function () {
 			_this.setState({
 				open: false
 			});
-		}, _temp), _possibleConstructorReturn(_this, _ret);
+		};
+
+		_this.loadFileData = function (fileId) {
+			_this.googleClient.loadFileData(fileId).then(function (data) {
+				if (data) {
+					_this.props.onDataChange(data);
+				}
+			});
+		};
+
+		_this.googleClient = null;
+		_googleClient2.default.load().then(function (loadedGoogleClient) {
+			console.log('google client loaded', loadedGoogleClient);
+			_this.googleClient = loadedGoogleClient;
+
+			var selectedFile = localStorage.getItem('selectedFile');
+			if (selectedFile) {
+				var fileJson = JSON.parse(selectedFile);
+				_this.setState({
+					selectedFileId: fileJson.id
+				});
+				_this.loadFileData(fileJson.id);
+			}
+		});
+		return _this;
 	}
 
 	_createClass(FilePickerGoogleDrive, [{
@@ -853,8 +875,13 @@ var listSpreadsheets = function listSpreadsheets() {
 };
 
 var loadFileData = function loadFileData(fileId) {
-	return gapi.client.sheets.spreadsheets.get({
-		spreadsheetId: fileId
+	return checkAuth().then(function (authResult) {
+		if (authResult.error) {
+			throw new Error(authResult.error);
+		}
+		return gapi.client.sheets.spreadsheets.get({
+			spreadsheetId: fileId
+		});
 	}).then(function (request) {
 		console.log('sheet loaded', request.result.sheets);
 		var spreadsheet = request.result;

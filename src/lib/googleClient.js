@@ -43,8 +43,13 @@ const listSpreadsheets = (): Promise<any> => {
 };
 
 const loadFileData = (fileId: string): Promise<any> => {
-	return gapi.client.sheets.spreadsheets.get({
-		spreadsheetId: fileId
+	return checkAuth().then((authResult) => {
+		if (authResult.error) {
+			throw new Error(authResult.error);
+		}
+		return gapi.client.sheets.spreadsheets.get({
+			spreadsheetId: fileId
+		});
 	}).then((request) => {
 		console.log('sheet loaded', request.result.sheets);
 		const spreadsheet = request.result;

@@ -39,7 +39,7 @@
     "flow": "flow",
     "jest": "jest",
     "lint": "eslint",
-    "serve": "http-server",
+    "serve": "http-server -p 8000",
     "test": "npm run test:source && npm run flow && npm run test:built",
     "test:built": "npm run build",
     "test:source": "npm run jest"

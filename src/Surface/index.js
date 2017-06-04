@@ -110,7 +110,8 @@ class Surface extends React.Component {
 			data: fileData,
 		});
 	};
-			handleCardClicked = () => {
+
+	handleCardClicked = () => {
 		this.setState({
 			cardFresh: !this.state.cardFresh
 		});
