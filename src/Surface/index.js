@@ -1,9 +1,11 @@
 // @flow
 import React from 'react';
+import Dialog from 'material-ui/Dialog';
 import Divider from 'material-ui/Divider';
 import Drawer from 'material-ui/Drawer';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
+import ActionInfo from 'material-ui/svg-icons/action/info';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
 
@@ -57,6 +59,8 @@ class Surface extends React.Component {
 		cardWidth: 0,
 		data: [],
 		drawerOpen: true,
+		infoDialogContent: '',
+		infoDialogOpen: false,
 		templateBack: '<p>{{col2}}</p>',
 		templateFront: '<p>{{col1}}</p>',
 	};
@@ -95,7 +99,7 @@ class Surface extends React.Component {
 			});
 		}
 	}
-			handleMenu = () => {
+	handleMenu = () => {
 		this.setState({
 			drawerOpen: !this.state.drawerOpen,
 		});
@@ -126,6 +130,27 @@ class Surface extends React.Component {
 				templateBack: event.target.value
 			});
 		}
+	}
+
+	showInfoDialog = (info: string) => {
+		this.setState({
+			infoDialogContent: info,
+			infoDialogOpen: true,
+		});
+	}
+
+	closeInfoDialog = () => {
+		this.setState({
+			infoDialogOpen: false,
+		});
+	}
+
+	showFileSelectorInfo = () => {
+		this.showInfoDialog('Select a spreadsheet. Each row of the spreadsheet will create a single card.');
+	}
+
+	showFormatInfo = () => {
+		this.showInfoDialog('You can specify which columns appear on the front and back of each card. Use HTML to customize card layout and {{colN}} placeholders to designate which columns should appear, and where.');
 	}
 
 	render() {
@@ -207,14 +232,28 @@ class Surface extends React.Component {
 						</IconButton>
 					</div>
 					<div style={{margin: 10}}>
-						<p style={{fontSize: '1.5em'}}>Selected File</p>
+						<div style={{display: 'flex', justifyContent: 'space-between'}}>
+							<span style={{fontSize: '1.5em'}}>Selected File</span>
+							<IconButton
+								onClick={this.showFileSelectorInfo}
+							>
+								<ActionInfo />
+							</IconButton>
+						</div>
 						<FilePickerGoogleDrive
 							onDataChange={this.handleDataChanged}
 						/>
 					</div>
 					<Divider />
 					<div style={{margin: 10}}>
-						<p style={{fontSize: '1.5em'}}>Card Format</p>
+						<div style={{display: 'flex', justifyContent: 'space-between'}}>
+							<span style={{fontSize: '1.5em'}}>Card Format</span>
+							<IconButton
+								onClick={this.showFormatInfo}
+							>
+								<ActionInfo />
+							</IconButton>
+						</div>
 						<p>Card Front</p>
 						<textarea
 							name="frontTemplateField"
@@ -231,6 +270,12 @@ class Surface extends React.Component {
 						/>
 					</div>
 				</Drawer>
+				<Dialog
+					open={this.state.infoDialogOpen}
+					onRequestClose={this.closeInfoDialog}
+				>
+					{this.state.infoDialogContent}
+				</Dialog>
 			</div>
 		);
 	}

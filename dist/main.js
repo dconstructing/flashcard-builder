@@ -1,6 +1,6 @@
 webpackJsonp([0],{
 
-/***/ 196:
+/***/ 198:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -16,15 +16,15 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _MuiThemeProvider = __webpack_require__(345);
+var _MuiThemeProvider = __webpack_require__(347);
 
 var _MuiThemeProvider2 = _interopRequireDefault(_MuiThemeProvider);
 
-var _getMuiTheme = __webpack_require__(158);
+var _getMuiTheme = __webpack_require__(162);
 
 var _getMuiTheme2 = _interopRequireDefault(_getMuiTheme);
 
-var _Surface = __webpack_require__(201);
+var _Surface = __webpack_require__(203);
 
 var _Surface2 = _interopRequireDefault(_Surface);
 
@@ -67,7 +67,7 @@ exports.default = App2;
 
 /***/ }),
 
-/***/ 198:
+/***/ 200:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -83,13 +83,13 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _mustache = __webpack_require__(361);
+var _mustache = __webpack_require__(364);
 
 var _mustache2 = _interopRequireDefault(_mustache);
 
-var _htmlToReact = __webpack_require__(278);
+var _htmlToReact = __webpack_require__(280);
 
-var _Paper = __webpack_require__(45);
+var _Paper = __webpack_require__(38);
 
 var _Paper2 = _interopRequireDefault(_Paper);
 
@@ -162,7 +162,7 @@ exports.default = Card;
 
 /***/ }),
 
-/***/ 199:
+/***/ 201:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -178,7 +178,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _FlatButton = __webpack_require__(152);
+var _FlatButton = __webpack_require__(154);
 
 var _FlatButton2 = _interopRequireDefault(_FlatButton);
 
@@ -273,7 +273,7 @@ exports.default = Cards;
 
 /***/ }),
 
-/***/ 200:
+/***/ 202:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -289,23 +289,23 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Menu = __webpack_require__(322);
+var _Menu = __webpack_require__(326);
 
 var _Menu2 = _interopRequireDefault(_Menu);
 
-var _MenuItem = __webpack_require__(156);
+var _MenuItem = __webpack_require__(158);
 
 var _MenuItem2 = _interopRequireDefault(_MenuItem);
 
-var _Popover = __webpack_require__(328);
+var _Popover = __webpack_require__(332);
 
 var _Popover2 = _interopRequireDefault(_Popover);
 
-var _RaisedButton = __webpack_require__(330);
+var _RaisedButton = __webpack_require__(334);
 
 var _RaisedButton2 = _interopRequireDefault(_RaisedButton);
 
-var _googleClient = __webpack_require__(202);
+var _googleClient = __webpack_require__(204);
 
 var _googleClient2 = _interopRequireDefault(_googleClient);
 
@@ -416,7 +416,7 @@ exports.default = FilePickerGoogleDrive;
 
 /***/ }),
 
-/***/ 201:
+/***/ 203:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -432,39 +432,47 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Divider = __webpack_require__(312);
+var _Dialog = __webpack_require__(314);
+
+var _Dialog2 = _interopRequireDefault(_Dialog);
+
+var _Divider = __webpack_require__(316);
 
 var _Divider2 = _interopRequireDefault(_Divider);
 
-var _Drawer = __webpack_require__(314);
+var _Drawer = __webpack_require__(318);
 
 var _Drawer2 = _interopRequireDefault(_Drawer);
 
-var _FlatButton = __webpack_require__(152);
+var _FlatButton = __webpack_require__(154);
 
 var _FlatButton2 = _interopRequireDefault(_FlatButton);
 
-var _IconButton = __webpack_require__(153);
+var _IconButton = __webpack_require__(155);
 
 var _IconButton2 = _interopRequireDefault(_IconButton);
 
-var _close = __webpack_require__(351);
+var _info = __webpack_require__(352);
+
+var _info2 = _interopRequireDefault(_info);
+
+var _close = __webpack_require__(354);
 
 var _close2 = _interopRequireDefault(_close);
 
-var _menu = __webpack_require__(354);
+var _menu = __webpack_require__(357);
 
 var _menu2 = _interopRequireDefault(_menu);
 
-var _Card = __webpack_require__(198);
+var _Card = __webpack_require__(200);
 
 var _Card2 = _interopRequireDefault(_Card);
 
-var _Cards = __webpack_require__(199);
+var _Cards = __webpack_require__(201);
 
 var _Cards2 = _interopRequireDefault(_Cards);
 
-var _FilePickerGoogleDrive = __webpack_require__(200);
+var _FilePickerGoogleDrive = __webpack_require__(202);
 
 var _FilePickerGoogleDrive2 = _interopRequireDefault(_FilePickerGoogleDrive);
 
@@ -535,6 +543,8 @@ var Surface = function (_React$Component) {
 			cardWidth: 0,
 			data: [],
 			drawerOpen: true,
+			infoDialogContent: '',
+			infoDialogOpen: false,
 			templateBack: '<p>{{col2}}</p>',
 			templateFront: '<p>{{col1}}</p>'
 		}, _this.componentDidMount = function () {
@@ -590,6 +600,19 @@ var Surface = function (_React$Component) {
 					templateBack: event.target.value
 				});
 			}
+		}, _this.showInfoDialog = function (info) {
+			_this.setState({
+				infoDialogContent: info,
+				infoDialogOpen: true
+			});
+		}, _this.closeInfoDialog = function () {
+			_this.setState({
+				infoDialogOpen: false
+			});
+		}, _this.showFileSelectorInfo = function () {
+			_this.showInfoDialog('Select a spreadsheet. Each row of the spreadsheet will create a single card.');
+		}, _this.showFormatInfo = function () {
+			_this.showInfoDialog('You can specify which columns appear on the front and back of each card. Use HTML to customize card layout and {{colN}} placeholders to designate which columns should appear, and where.');
 		}, _temp), _possibleConstructorReturn(_this, _ret);
 	}
 
@@ -700,9 +723,20 @@ var Surface = function (_React$Component) {
 						'div',
 						{ style: { margin: 10 } },
 						_react2.default.createElement(
-							'p',
-							{ style: { fontSize: '1.5em' } },
-							'Selected File'
+							'div',
+							{ style: { display: 'flex', justifyContent: 'space-between' } },
+							_react2.default.createElement(
+								'span',
+								{ style: { fontSize: '1.5em' } },
+								'Selected File'
+							),
+							_react2.default.createElement(
+								_IconButton2.default,
+								{
+									onClick: this.showFileSelectorInfo
+								},
+								_react2.default.createElement(_info2.default, null)
+							)
 						),
 						_react2.default.createElement(_FilePickerGoogleDrive2.default, {
 							onDataChange: this.handleDataChanged
@@ -713,9 +747,20 @@ var Surface = function (_React$Component) {
 						'div',
 						{ style: { margin: 10 } },
 						_react2.default.createElement(
-							'p',
-							{ style: { fontSize: '1.5em' } },
-							'Card Format'
+							'div',
+							{ style: { display: 'flex', justifyContent: 'space-between' } },
+							_react2.default.createElement(
+								'span',
+								{ style: { fontSize: '1.5em' } },
+								'Card Format'
+							),
+							_react2.default.createElement(
+								_IconButton2.default,
+								{
+									onClick: this.showFormatInfo
+								},
+								_react2.default.createElement(_info2.default, null)
+							)
 						),
 						_react2.default.createElement(
 							'p',
@@ -740,6 +785,14 @@ var Surface = function (_React$Component) {
 							onBlur: this.backTemplateChanged
 						})
 					)
+				),
+				_react2.default.createElement(
+					_Dialog2.default,
+					{
+						open: this.state.infoDialogOpen,
+						onRequestClose: this.closeInfoDialog
+					},
+					this.state.infoDialogContent
 				)
 			);
 		}
@@ -752,7 +805,7 @@ exports.default = Surface;
 
 /***/ }),
 
-/***/ 202:
+/***/ 204:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -852,7 +905,7 @@ exports.default = {
 
 /***/ }),
 
-/***/ 203:
+/***/ 205:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -862,15 +915,15 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactDom = __webpack_require__(20);
+var _reactDom = __webpack_require__(18);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _reactTapEventPlugin = __webpack_require__(197);
+var _reactTapEventPlugin = __webpack_require__(199);
 
 var _reactTapEventPlugin2 = _interopRequireDefault(_reactTapEventPlugin);
 
-var _App = __webpack_require__(196);
+var _App = __webpack_require__(198);
 
 var _App2 = _interopRequireDefault(_App);
 
@@ -882,5 +935,5 @@ _reactDom2.default.render(_react2.default.createElement(_App2.default, null), do
 
 /***/ })
 
-},[203]);
+},[205]);
 //# sourceMappingURL=main.js.map
