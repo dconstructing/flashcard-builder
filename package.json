@@ -37,11 +37,12 @@
     "dev": "webpack --progress --colors --watch",
     "build": "rimraf dist && webpack",
     "flow": "flow",
+    "jest": "jest",
     "lint": "eslint",
     "serve": "http-server",
     "test": "npm run test:source && npm run flow && npm run test:built",
     "test:built": "npm run build",
-    "test:source": "jest"
+    "test:source": "npm run jest"
   },
   "author": "David Cox <losttime.shuffle@gmail.com>",
   "license": "UNLICENSED"

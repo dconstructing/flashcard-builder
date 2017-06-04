@@ -289,11 +289,11 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Menu = __webpack_require__(323);
+var _Menu = __webpack_require__(322);
 
 var _Menu2 = _interopRequireDefault(_Menu);
 
-var _MenuItem = __webpack_require__(155);
+var _MenuItem = __webpack_require__(156);
 
 var _MenuItem2 = _interopRequireDefault(_MenuItem);
 
@@ -598,7 +598,6 @@ var Surface = function (_React$Component) {
 		value: function render() {
 			var _this2 = this;
 
-			console.log('rendering surface');
 			var cardStyle = {
 				backgroundColor: '#eee',
 				boxSizing: 'border-box',

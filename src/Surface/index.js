@@ -129,7 +129,6 @@ class Surface extends React.Component {
 	}
 
 	render() {
-		console.log('rendering surface');
 		const cardStyle = {
 			backgroundColor: '#eee',
 			boxSizing: 'border-box',

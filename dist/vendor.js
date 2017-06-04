@@ -7323,7 +7323,7 @@ module.exports = function _arity(n, fn) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var _isArray = __webpack_require__(164);
-var _isTransformer = __webpack_require__(376);
+var _isTransformer = __webpack_require__(377);
 
 
 /**
@@ -7378,9 +7378,9 @@ module.exports = function _has(prop, obj) {
 /* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var _xwrap = __webpack_require__(382);
+var _isArrayLike = __webpack_require__(374);
+var _xwrap = __webpack_require__(383);
 var bind = __webpack_require__(365);
-var isArrayLike = __webpack_require__(383);
 
 
 module.exports = (function() {
@@ -7411,8 +7411,8 @@ module.exports = (function() {
     return xf['@@transducer/result'](acc);
   }
 
-  function _methodReduce(xf, acc, obj) {
-    return xf['@@transducer/result'](obj.reduce(bind(xf['@@transducer/step'], xf), acc));
+  function _methodReduce(xf, acc, obj, methodName) {
+    return xf['@@transducer/result'](obj[methodName](bind(xf['@@transducer/step'], xf), acc));
   }
 
   var symIterator = (typeof Symbol !== 'undefined') ? Symbol.iterator : '@@iterator';
@@ -7420,11 +7420,11 @@ module.exports = (function() {
     if (typeof fn === 'function') {
       fn = _xwrap(fn);
     }
-    if (isArrayLike(list)) {
+    if (_isArrayLike(list)) {
       return _arrayReduce(fn, acc, list);
     }
-    if (typeof list.reduce === 'function') {
-      return _methodReduce(fn, acc, list);
+    if (typeof list['fantasy-land/reduce'] === 'function') {
+      return _methodReduce(fn, acc, list, 'fantasy-land/reduce');
     }
     if (list[symIterator] != null) {
       return _iterableReduce(fn, acc, list[symIterator]());
@@ -7432,6 +7432,10 @@ module.exports = (function() {
     if (typeof list.next === 'function') {
       return _iterableReduce(fn, acc, list);
     }
+    if (typeof list.reduce === 'function') {
+      return _methodReduce(fn, acc, list, 'reduce');
+    }
+
     throw new TypeError('reduce: list must be array or iterable');
   };
 }());
@@ -9909,6 +9913,8 @@ function createElement(node, index, data, children) {
         value = createStyleJsonFromString(value);
       } else if (key === 'class') {
         key = 'className';
+      } else if (key === 'for') {
+        key = 'htmlFor';
       }
       if (typeof value === 'string') {
         value = value;
@@ -10158,26 +10164,6 @@ exports.default = List;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = undefined;
-
-var _MenuItem = __webpack_require__(322);
-
-var _MenuItem2 = _interopRequireDefault(_MenuItem);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = _MenuItem2.default;
-
-/***/ }),
-/* 156 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 Object.defineProperty(exports, "__esModule", {
@@ -10252,7 +10238,7 @@ var _List = __webpack_require__(154);
 
 var _List2 = _interopRequireDefault(_List);
 
-var _menuUtils = __webpack_require__(324);
+var _menuUtils = __webpack_require__(323);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -10876,6 +10862,26 @@ process.env.NODE_ENV !== "production" ? Menu.propTypes = {
 } : void 0;
 exports.default = Menu;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 156 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = undefined;
+
+var _MenuItem = __webpack_require__(324);
+
+var _MenuItem2 = _interopRequireDefault(_MenuItem);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = _MenuItem2.default;
 
 /***/ }),
 /* 157 */
@@ -12429,10 +12435,10 @@ var _curryN = __webpack_require__(371);
  *   - `g(1, 2)(3)`
  *   - `g(1, 2, 3)`
  *
- * Secondly, the special placeholder value `R.__` may be used to specify
+ * Secondly, the special placeholder value [`R.__`](#__) may be used to specify
  * "gaps", allowing partial application of any combination of arguments,
- * regardless of their positions. If `g` is as above and `_` is `R.__`, the
- * following are equivalent:
+ * regardless of their positions. If `g` is as above and `_` is [`R.__`](#__),
+ * the following are equivalent:
  *
  *   - `g(1, 2, 3)`
  *   - `g(_, 2, 3)(1)`
@@ -12513,6 +12519,7 @@ var _isArguments = __webpack_require__(373);
  * @sig {k: v} -> [k]
  * @param {Object} obj The object to extract properties from
  * @return {Array} An array of the object's own properties.
+ * @see R.keysIn, R.values
  * @example
  *
  *      R.keys({a: 1, b: 2, c: 3}); //=> ['a', 'b', 'c']
@@ -29070,6 +29077,77 @@ exports.default = NestedList;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.MenuItem = exports.Menu = undefined;
+
+var _Menu2 = __webpack_require__(155);
+
+var _Menu3 = _interopRequireDefault(_Menu2);
+
+var _MenuItem2 = __webpack_require__(156);
+
+var _MenuItem3 = _interopRequireDefault(_MenuItem2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.Menu = _Menu3.default;
+exports.MenuItem = _MenuItem3.default;
+exports.default = _Menu3.default;
+
+/***/ }),
+/* 323 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.HotKeyHolder = undefined;
+
+var _classCallCheck2 = __webpack_require__(5);
+
+var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
+
+var _createClass2 = __webpack_require__(7);
+
+var _createClass3 = _interopRequireDefault(_createClass2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var HotKeyHolder = exports.HotKeyHolder = function () {
+  function HotKeyHolder() {
+    var _this = this;
+
+    (0, _classCallCheck3.default)(this, HotKeyHolder);
+
+    this.clear = function () {
+      _this.timerId = null;
+      _this.lastKeys = null;
+    };
+  }
+
+  (0, _createClass3.default)(HotKeyHolder, [{
+    key: 'append',
+    value: function append(key) {
+      clearTimeout(this.timerId);
+      this.timerId = setTimeout(this.clear, 500);
+      return this.lastKeys = (this.lastKeys || '') + key;
+    }
+  }]);
+  return HotKeyHolder;
+}();
+
+/***/ }),
+/* 324 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {
 
 Object.defineProperty(exports, "__esModule", {
@@ -29136,7 +29214,7 @@ var _ListItem = __webpack_require__(320);
 
 var _ListItem2 = _interopRequireDefault(_ListItem);
 
-var _Menu = __webpack_require__(156);
+var _Menu = __webpack_require__(155);
 
 var _Menu2 = _interopRequireDefault(_Menu);
 
@@ -29477,77 +29555,6 @@ process.env.NODE_ENV !== "production" ? MenuItem.propTypes = {
 } : void 0;
 exports.default = MenuItem;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 323 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = exports.MenuItem = exports.Menu = undefined;
-
-var _Menu2 = __webpack_require__(156);
-
-var _Menu3 = _interopRequireDefault(_Menu2);
-
-var _MenuItem2 = __webpack_require__(155);
-
-var _MenuItem3 = _interopRequireDefault(_MenuItem2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.Menu = _Menu3.default;
-exports.MenuItem = _MenuItem3.default;
-exports.default = _Menu3.default;
-
-/***/ }),
-/* 324 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.HotKeyHolder = undefined;
-
-var _classCallCheck2 = __webpack_require__(5);
-
-var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
-
-var _createClass2 = __webpack_require__(7);
-
-var _createClass3 = _interopRequireDefault(_createClass2);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var HotKeyHolder = exports.HotKeyHolder = function () {
-  function HotKeyHolder() {
-    var _this = this;
-
-    (0, _classCallCheck3.default)(this, HotKeyHolder);
-
-    this.clear = function () {
-      _this.timerId = null;
-      _this.lastKeys = null;
-    };
-  }
-
-  (0, _createClass3.default)(HotKeyHolder, [{
-    key: 'append',
-    value: function append(key) {
-      clearTimeout(this.timerId);
-      this.timerId = setTimeout(this.clear, 500);
-      return this.lastKeys = (this.lastKeys || '') + key;
-    }
-  }]);
-  return HotKeyHolder;
-}();
 
 /***/ }),
 /* 325 */
@@ -34387,7 +34394,7 @@ var curryN = __webpack_require__(163);
  * Creates a new list iteration function from an existing one by adding two new
  * parameters to its callback function: the current index, and the entire list.
  *
- * This would turn, for instance, Ramda's simple `map` function into one that
+ * This would turn, for instance, [`R.map`](#map) function into one that
  * more closely resembles `Array.prototype.map`. Note that this will only work
  * for functions in which the iteration callback function is the first
  * parameter, and where the list is the last parameter. (This latter might be
@@ -34467,16 +34474,17 @@ module.exports = _curry2(function bind(fn, thisObj) {
 var _curry2 = __webpack_require__(24);
 var _dispatchable = __webpack_require__(99);
 var _filter = __webpack_require__(372);
-var _isObject = __webpack_require__(374);
+var _isObject = __webpack_require__(375);
 var _reduce = __webpack_require__(101);
-var _xfilter = __webpack_require__(379);
+var _xfilter = __webpack_require__(380);
 var keys = __webpack_require__(165);
 
 
 /**
- * Takes a predicate and a "filterable", and returns a new filterable of the
+ * Takes a predicate and a `Filterable`, and returns a new filterable of the
  * same type containing the members of the given filterable which satisfy the
- * given predicate.
+ * given predicate. Filterable objects include plain objects or any object
+ * that has a filter method such as `Array`.
  *
  * Dispatches to the `filter` method of the second argument, if present.
  *
@@ -34489,7 +34497,7 @@ var keys = __webpack_require__(165);
  * @sig Filterable f => (a -> Boolean) -> f a -> f a
  * @param {Function} pred
  * @param {Array} filterable
- * @return {Array}
+ * @return {Array} Filterable
  * @see R.reject, R.transduce, R.addIndex
  * @example
  *
@@ -34520,7 +34528,7 @@ module.exports = _curry2(_dispatchable(['filter'], _xfilter, function(pred, filt
 
 var _curry2 = __webpack_require__(24);
 var _dispatchable = __webpack_require__(99);
-var _xfind = __webpack_require__(380);
+var _xfind = __webpack_require__(381);
 
 
 /**
@@ -34733,6 +34741,46 @@ module.exports = (function() {
 
 /***/ }),
 /* 374 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _curry1 = __webpack_require__(38);
+var _isArray = __webpack_require__(164);
+var _isString = __webpack_require__(376);
+
+
+/**
+ * Tests whether or not an object is similar to an array.
+ *
+ * @private
+ * @category Type
+ * @category List
+ * @sig * -> Boolean
+ * @param {*} x The object to test.
+ * @return {Boolean} `true` if `x` has a numeric length property and extreme indices defined; `false` otherwise.
+ * @example
+ *
+ *      _isArrayLike([]); //=> true
+ *      _isArrayLike(true); //=> false
+ *      _isArrayLike({}); //=> false
+ *      _isArrayLike({length: 10}); //=> false
+ *      _isArrayLike({0: 'zero', 9: 'nine', length: 10}); //=> true
+ */
+module.exports = _curry1(function isArrayLike(x) {
+  if (_isArray(x)) { return true; }
+  if (!x) { return false; }
+  if (typeof x !== 'object') { return false; }
+  if (_isString(x)) { return false; }
+  if (x.nodeType === 1) { return !!x.length; }
+  if (x.length === 0) { return true; }
+  if (x.length > 0) {
+    return x.hasOwnProperty(0) && x.hasOwnProperty(x.length - 1);
+  }
+  return false;
+});
+
+
+/***/ }),
+/* 375 */
 /***/ (function(module, exports) {
 
 module.exports = function _isObject(x) {
@@ -34741,7 +34789,7 @@ module.exports = function _isObject(x) {
 
 
 /***/ }),
-/* 375 */
+/* 376 */
 /***/ (function(module, exports) {
 
 module.exports = function _isString(x) {
@@ -34750,7 +34798,7 @@ module.exports = function _isString(x) {
 
 
 /***/ }),
-/* 376 */
+/* 377 */
 /***/ (function(module, exports) {
 
 module.exports = function _isTransformer(obj) {
@@ -34759,7 +34807,7 @@ module.exports = function _isTransformer(obj) {
 
 
 /***/ }),
-/* 377 */
+/* 378 */
 /***/ (function(module, exports) {
 
 module.exports = function _map(fn, functor) {
@@ -34775,7 +34823,7 @@ module.exports = function _map(fn, functor) {
 
 
 /***/ }),
-/* 378 */
+/* 379 */
 /***/ (function(module, exports) {
 
 module.exports = function _reduced(x) {
@@ -34788,7 +34836,7 @@ module.exports = function _reduced(x) {
 
 
 /***/ }),
-/* 379 */
+/* 380 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _curry2 = __webpack_require__(24);
@@ -34811,11 +34859,11 @@ module.exports = (function() {
 
 
 /***/ }),
-/* 380 */
+/* 381 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _curry2 = __webpack_require__(24);
-var _reduced = __webpack_require__(378);
+var _reduced = __webpack_require__(379);
 var _xfBase = __webpack_require__(102);
 
 
@@ -34845,7 +34893,7 @@ module.exports = (function() {
 
 
 /***/ }),
-/* 381 */
+/* 382 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _curry2 = __webpack_require__(24);
@@ -34868,7 +34916,7 @@ module.exports = (function() {
 
 
 /***/ }),
-/* 382 */
+/* 383 */
 /***/ (function(module, exports) {
 
 module.exports = (function() {
@@ -34888,57 +34936,14 @@ module.exports = (function() {
 
 
 /***/ }),
-/* 383 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var _curry1 = __webpack_require__(38);
-var _isArray = __webpack_require__(164);
-var _isString = __webpack_require__(375);
-
-
-/**
- * Tests whether or not an object is similar to an array.
- *
- * @func
- * @memberOf R
- * @since v0.5.0
- * @category Type
- * @category List
- * @sig * -> Boolean
- * @param {*} x The object to test.
- * @return {Boolean} `true` if `x` has a numeric length property and extreme indices defined; `false` otherwise.
- * @deprecated since v0.23.0
- * @example
- *
- *      R.isArrayLike([]); //=> true
- *      R.isArrayLike(true); //=> false
- *      R.isArrayLike({}); //=> false
- *      R.isArrayLike({length: 10}); //=> false
- *      R.isArrayLike({0: 'zero', 9: 'nine', length: 10}); //=> true
- */
-module.exports = _curry1(function isArrayLike(x) {
-  if (_isArray(x)) { return true; }
-  if (!x) { return false; }
-  if (typeof x !== 'object') { return false; }
-  if (_isString(x)) { return false; }
-  if (x.nodeType === 1) { return !!x.length; }
-  if (x.length === 0) { return true; }
-  if (x.length > 0) {
-    return x.hasOwnProperty(0) && x.hasOwnProperty(x.length - 1);
-  }
-  return false;
-});
-
-
-/***/ }),
 /* 384 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var _curry2 = __webpack_require__(24);
 var _dispatchable = __webpack_require__(99);
-var _map = __webpack_require__(377);
+var _map = __webpack_require__(378);
 var _reduce = __webpack_require__(101);
-var _xmap = __webpack_require__(381);
+var _xmap = __webpack_require__(382);
 var curryN = __webpack_require__(163);
 var keys = __webpack_require__(165);
 
@@ -34978,7 +34983,7 @@ var keys = __webpack_require__(165);
  * @symb R.map(f, { x: a, y: b }) = { x: f(a), y: f(b) }
  * @symb R.map(f, functor_o) = functor_o.map(f)
  */
-module.exports = _curry2(_dispatchable(['map'], _xmap, function map(fn, functor) {
+module.exports = _curry2(_dispatchable(['fantasy-land/map', 'map'], _xmap, function map(fn, functor) {
   switch (Object.prototype.toString.call(functor)) {
     case '[object Function]':
       return curryN(functor.length, function() {
@@ -35009,16 +35014,19 @@ var _reduce = __webpack_require__(101);
  * value from the array, and then passing the result to the next call.
  *
  * The iterator function receives two values: *(acc, value)*. It may use
- * `R.reduced` to shortcut the iteration.
+ * [`R.reduced`](#reduced) to shortcut the iteration.
  *
- * The arguments' order of `reduceRight`'s iterator function is *(value, acc)*.
+ * The arguments' order of [`reduceRight`](#reduceRight)'s iterator function
+ * is *(value, acc)*.
  *
  * Note: `R.reduce` does not skip deleted or unassigned indices (sparse
  * arrays), unlike the native `Array.prototype.reduce` method. For more details
  * on this behavior, see:
  * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce#Description
  *
- * Dispatches to the `reduce` method of the third argument, if present.
+ * Dispatches to the `reduce` method of the third argument, if present. When
+ * doing so, it is up to the user to handle the [`R.reduced`](#reduced)
+ * shortcuting, as this is not implemented by `reduce`.
  *
  * @func
  * @memberOf R
@@ -35059,9 +35067,11 @@ var filter = __webpack_require__(366);
 
 
 /**
- * The complement of `filter`.
+ * The complement of [`filter`](#filter).
  *
- * Acts as a transducer if a transformer is given in list position.
+ * Acts as a transducer if a transformer is given in list position. Filterable
+ * objects include plain objects or any object that has a filter method such
+ * as `Array`.
  *
  * @func
  * @memberOf R
