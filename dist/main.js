@@ -178,7 +178,7 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _FlatButton = __webpack_require__(154);
+var _FlatButton = __webpack_require__(96);
 
 var _FlatButton2 = _interopRequireDefault(_FlatButton);
 
@@ -289,11 +289,15 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Menu = __webpack_require__(327);
+var _FlatButton = __webpack_require__(96);
+
+var _FlatButton2 = _interopRequireDefault(_FlatButton);
+
+var _Menu = __webpack_require__(326);
 
 var _Menu2 = _interopRequireDefault(_Menu);
 
-var _MenuItem = __webpack_require__(157);
+var _MenuItem = __webpack_require__(158);
 
 var _MenuItem2 = _interopRequireDefault(_MenuItem);
 
@@ -333,16 +337,45 @@ var FilePickerGoogleDrive = function (_React$Component) {
 			selectedFileId: null
 		};
 
-		_this.handleButtonClick = function (event) {
-			console.log('do google drive stuff', event);
-			event.preventDefault();
-			_this.googleClient.listSpreadsheets().then(function (files) {
-				if (files) {
-					_this.setState({
-						files: files
-					});
-				}
+		_this.displayFile = function (fileId) {
+			_this.setState({
+				open: false,
+				selectedFileId: fileId
 			});
+			_this.loadFileData(fileId);
+		};
+
+		_this.handleSignInChange = function (isSignedIn) {
+			console.log('handling sign in state change', isSignedIn);
+			if (isSignedIn) {
+				_this.loadSpreadsheets();
+				var selectedFile = localStorage.getItem('selectedFile');
+				if (selectedFile) {
+					var fileJson = JSON.parse(selectedFile);
+					if (fileJson.provider === 'google') {
+						_this.displayFile(fileJson.id);
+					}
+				}
+				_this.setState({
+					authed: true
+				});
+			} else {
+				_this.setState({
+					authed: false,
+					files: [],
+					open: false,
+					selectedFileId: null
+				});
+				_this.props.onDataChange([]);
+			}
+		};
+
+		_this.handleButtonClick = function (event) {
+			console.log('open google drive menu', event);
+			event.preventDefault();
+			if (!_this.state.authed) {
+				_this.googleClient.signIn();
+			}
 			_this.setState({
 				anchor: event.currentTarget,
 				open: true
@@ -350,11 +383,7 @@ var FilePickerGoogleDrive = function (_React$Component) {
 		};
 
 		_this.handleFileSelected = function (event, value) {
-			_this.setState({
-				open: false,
-				selectedFileId: value
-			});
-			_this.loadFileData(value);
+			_this.displayFile(value);
 			localStorage.setItem('selectedFile', JSON.stringify({
 				id: value,
 				provider: 'google'
@@ -364,6 +393,21 @@ var FilePickerGoogleDrive = function (_React$Component) {
 		_this.handleRequestClose = function () {
 			_this.setState({
 				open: false
+			});
+		};
+
+		_this.handleDisconnectClick = function () {
+			_this.googleClient.signOut();
+			localStorage.clear();
+		};
+
+		_this.loadSpreadsheets = function () {
+			_this.googleClient.listSpreadsheets().then(function (files) {
+				if (files) {
+					_this.setState({
+						files: files
+					});
+				}
 			});
 		};
 
@@ -379,15 +423,7 @@ var FilePickerGoogleDrive = function (_React$Component) {
 		_googleClient2.default.load().then(function (loadedGoogleClient) {
 			console.log('google client loaded', loadedGoogleClient);
 			_this.googleClient = loadedGoogleClient;
-
-			var selectedFile = localStorage.getItem('selectedFile');
-			if (selectedFile) {
-				var fileJson = JSON.parse(selectedFile);
-				_this.setState({
-					selectedFileId: fileJson.id
-				});
-				_this.loadFileData(fileJson.id);
-			}
+			_this.googleClient.registerSignInListener(_this.handleSignInChange);
 		});
 		return _this;
 	}
@@ -402,6 +438,10 @@ var FilePickerGoogleDrive = function (_React$Component) {
 					label: 'Google Drive',
 					onClick: this.handleButtonClick
 				}),
+				this.state.authed ? _react2.default.createElement(_FlatButton2.default, {
+					label: 'disconnect',
+					onClick: this.handleDisconnectClick
+				}) : null,
 				this.state.files.length > 0 ? _react2.default.createElement(
 					_Popover2.default,
 					{
@@ -466,7 +506,7 @@ var _Drawer = __webpack_require__(318);
 
 var _Drawer2 = _interopRequireDefault(_Drawer);
 
-var _FlatButton = __webpack_require__(154);
+var _FlatButton = __webpack_require__(96);
 
 var _FlatButton2 = _interopRequireDefault(_FlatButton);
 
@@ -844,10 +884,19 @@ var SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly', 'https://
 
 var checkAuth = function checkAuth() {
 	console.log('checking Google Auth');
-	return gapi.auth.authorize({
-		'client_id': CLIENT_ID,
-		'scope': SCOPES.join(' '),
-		'immediate': true
+	return gapi.client.init({
+		clientId: CLIENT_ID,
+		scope: SCOPES.join(' ')
+	}).then(function () {
+		gapi.auth2.init({
+			clientId: CLIENT_ID,
+			scope: SCOPES.join(' ')
+		}).then(function (auth) {
+			return auth.isSignedIn.get();
+		}, function (error) {
+			console.log('error', error);
+			return false;
+		});
 	});
 };
 
@@ -859,13 +908,22 @@ var loadFiles = function loadFiles() {
 	});
 };
 
+var registerSignInListener = function registerSignInListener(listener) {
+	var auth = gapi.auth2.getAuthInstance();
+	auth.isSignedIn.listen(listener);
+	listener(auth.isSignedIn.get());
+};
+
+var signIn = function signIn() {
+	gapi.auth2.getAuthInstance().signIn();
+};
+
+var signOut = function signOut() {
+	gapi.auth2.getAuthInstance().signOut();
+};
+
 var listSpreadsheets = function listSpreadsheets() {
-	return checkAuth().then(function (authResult) {
-		if (authResult.error) {
-			throw new Error(authResult.error);
-		}
-		return loadFiles();
-	}).then(function (request) {
+	return loadFiles().then(function (request) {
 		console.log('loaded files', request.result);
 		return request.result.files;
 	}, function (error) {
@@ -875,13 +933,8 @@ var listSpreadsheets = function listSpreadsheets() {
 };
 
 var loadFileData = function loadFileData(fileId) {
-	return checkAuth().then(function (authResult) {
-		if (authResult.error) {
-			throw new Error(authResult.error);
-		}
-		return gapi.client.sheets.spreadsheets.get({
-			spreadsheetId: fileId
-		});
+	return gapi.client.sheets.spreadsheets.get({
+		spreadsheetId: fileId
 	}).then(function (request) {
 		console.log('sheet loaded', request.result.sheets);
 		var spreadsheet = request.result;
@@ -917,11 +970,16 @@ var load = function load() {
 			resolve();
 		});
 	}).then(function () {
+		return checkAuth();
+	}).then(function () {
 		return Promise.all([loadDriveApi(), loadSheetsApi()]);
 	}).then(function () {
 		return {
 			listSpreadsheets: listSpreadsheets,
-			loadFileData: loadFileData
+			loadFileData: loadFileData,
+			registerSignInListener: registerSignInListener,
+			signIn: signIn,
+			signOut: signOut
 		};
 	});
 };

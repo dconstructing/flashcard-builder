@@ -2,6 +2,9 @@
 declare type GoogleClient = {
 	listSpreadsheets: () => Promise<any>,
 	loadFileData: (fileId: string) => Promise<any>,
+	registerSignInListener: ((boolean) => void) => void,
+	signIn: () => void,
+	signOut: () => void,
 };
 
 const CLIENT_ID = '594524984428-ri54vus01s2c57iqp2i8cmr5l67n9g2s.apps.googleusercontent.com';
@@ -12,10 +15,19 @@ const SCOPES = [
 
 const checkAuth = (): Promise<any> => {
 	console.log('checking Google Auth');
-	return gapi.auth.authorize({
-		'client_id': CLIENT_ID,
-		'scope': SCOPES.join(' '),
-		'immediate': true
+	return gapi.client.init({
+		clientId: CLIENT_ID,
+		scope: SCOPES.join(' '),
+	}).then(() => {
+		gapi.auth2.init({
+			clientId: CLIENT_ID,
+			scope: SCOPES.join(' '),
+		}).then((auth: GoogleAuth) => {
+			return auth.isSignedIn.get();
+		}, (error) => {
+			console.log('error', error);
+			return false;
+		});
 	});
 };
 
@@ -27,13 +39,22 @@ const loadFiles = (): Promise<any> => {
 	});
 };
 
+const registerSignInListener = (listener: (boolean) => void) => {
+	const auth: GoogleAuth = gapi.auth2.getAuthInstance();
+	auth.isSignedIn.listen(listener);
+	listener(auth.isSignedIn.get());
+};
+
+const signIn = () => {
+	gapi.auth2.getAuthInstance().signIn();
+};
+
+const signOut = () => {
+	gapi.auth2.getAuthInstance().signOut();
+};
+
 const listSpreadsheets = (): Promise<any> => {
-	return checkAuth().then((authResult) => {
-		if (authResult.error) {
-			throw new Error(authResult.error);
-		}
-		return loadFiles();
-	}).then((request) => {
+	return loadFiles().then((request) => {
 		console.log('loaded files', request.result);
 		return request.result.files;
 	}, (error) => {
@@ -43,13 +64,8 @@ const listSpreadsheets = (): Promise<any> => {
 };
 
 const loadFileData = (fileId: string): Promise<any> => {
-	return checkAuth().then((authResult) => {
-		if (authResult.error) {
-			throw new Error(authResult.error);
-		}
-		return gapi.client.sheets.spreadsheets.get({
+	return gapi.client.sheets.spreadsheets.get({
 			spreadsheetId: fileId
-		});
 	}).then((request) => {
 		console.log('sheet loaded', request.result.sheets);
 		const spreadsheet = request.result;
@@ -85,11 +101,16 @@ const load = (): Promise<GoogleClient> => {
 			resolve();
 		});
 	}).then(() => {
+		return checkAuth();
+	}).then(() => {
 		return Promise.all([loadDriveApi(), loadSheetsApi()]);
 	}).then(() => {
 		return {
 			listSpreadsheets: listSpreadsheets,
 			loadFileData: loadFileData,
+			registerSignInListener: registerSignInListener,
+			signIn: signIn,
+			signOut: signOut,
 		};
 	});
 };
