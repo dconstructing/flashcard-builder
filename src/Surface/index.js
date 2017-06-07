@@ -8,6 +8,7 @@ import IconButton from 'material-ui/IconButton';
 import ActionInfo from 'material-ui/svg-icons/action/info';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
+import IoSocialGithub from 'react-icons/lib/io/social-github';
 
 import Card from '../Card';
 import Cards from '../Cards';
@@ -175,6 +176,7 @@ class Surface extends React.Component {
 					<span style={{padding: '10px 15px'}}>Flashcard Builder</span>
 					<IconButton
 						tooltip="menu"
+						tooltipPosition="bottom-left"
 						onTouchTap={this.handleMenu}
 					>
 						<NavigationMenu color="#666" />
@@ -202,6 +204,16 @@ class Surface extends React.Component {
 					id="footer"
 					style={footerStyle}
 				>
+					<IconButton
+						href="https://github.com/dconstructing/flashcard-builder"
+						tooltip="Find on GitHub"
+						tooltipPosition="top-right"
+					>
+						<IoSocialGithub
+							size={24}
+							color='#666'
+						/>
+					</IconButton>
 					Donate with:
 					<FlatButton
 						href="https://www.paypal.me/davidgawaincox"
@@ -227,6 +239,7 @@ class Surface extends React.Component {
 					>
 						<IconButton
 							tooltip="close"
+							tooltipPosition="bottom-left"
 							onTouchTap={this.handleMenu}
 						>
 							<NavigationClose />
