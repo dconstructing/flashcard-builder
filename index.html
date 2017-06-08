@@ -12,6 +12,22 @@
 				flex-direction: column;
 				height: 100%;
 			}
+			#interactive {
+				display: flex;
+			}
+			#printable {
+				display: none;
+			}
+			@media screen {
+			}
+			@media print {
+				#printable {
+					display: flex;
+				}
+				#interactive {
+					display: none;
+				}
+			}
 		</style>
 	</head>
 	<body>

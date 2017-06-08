@@ -3,12 +3,25 @@ import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 
 class Cards extends React.Component {
+	static defaultProps = {
+		max: 1,
+	};
+
 	props: {
 		children: any,
+		max: number,
 	};
 
 	state = {
 		index: 0,
+	};
+
+	getVisibleChildren = () => {
+		if (this.props.max > 0) {
+			return React.Children.toArray(this.props.children).slice(this.state.index, this.state.index + 1);
+		} else {
+			return this.props.children;
+		}
 	};
 
 	onPreviousCard = () => {
@@ -37,9 +50,10 @@ class Cards extends React.Component {
 			<p>Load a spreadsheet in the sidebar to generate cards</p>
 		</div>;
 		if (React.Children.count(this.props.children) > 0) {
-			const visible = React.Children.toArray(this.props.children).slice(this.state.index, this.state.index + 1);
-			content = <div>
-				{visible}
+			const visible = this.getVisibleChildren();
+			let nav = null;
+			if (visible.length < this.props.children.length) {
+				nav = <div>
 				<FlatButton
 					label="previous"
 					onClick={this.onPreviousCard}
@@ -47,7 +61,11 @@ class Cards extends React.Component {
 				<FlatButton
 					label="next"
 					onClick={this.onNextCard}
-				/>
+				/></div>
+			}
+			content = <div>
+				{visible}
+				{nav}
 			</div>;
 		}
 		return(

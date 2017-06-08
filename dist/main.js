@@ -206,6 +206,12 @@ var Cards = function (_React$Component) {
 
 		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Cards.__proto__ || Object.getPrototypeOf(Cards)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
 			index: 0
+		}, _this.getVisibleChildren = function () {
+			if (_this.props.max > 0) {
+				return _react2.default.Children.toArray(_this.props.children).slice(_this.state.index, _this.state.index + 1);
+			} else {
+				return _this.props.children;
+			}
 		}, _this.onPreviousCard = function () {
 			var newIndex = _this.state.index - 1;
 			if (newIndex < 0) {
@@ -243,19 +249,27 @@ var Cards = function (_React$Component) {
 				)
 			);
 			if (_react2.default.Children.count(this.props.children) > 0) {
-				var visible = _react2.default.Children.toArray(this.props.children).slice(this.state.index, this.state.index + 1);
+				var visible = this.getVisibleChildren();
+				var nav = null;
+				if (visible.length < this.props.children.length) {
+					nav = _react2.default.createElement(
+						'div',
+						null,
+						_react2.default.createElement(_FlatButton2.default, {
+							label: 'previous',
+							onClick: this.onPreviousCard
+						}),
+						_react2.default.createElement(_FlatButton2.default, {
+							label: 'next',
+							onClick: this.onNextCard
+						})
+					);
+				}
 				content = _react2.default.createElement(
 					'div',
 					null,
 					visible,
-					_react2.default.createElement(_FlatButton2.default, {
-						label: 'previous',
-						onClick: this.onPreviousCard
-					}),
-					_react2.default.createElement(_FlatButton2.default, {
-						label: 'next',
-						onClick: this.onNextCard
-					})
+					nav
 				);
 			}
 			return _react2.default.createElement(
@@ -269,6 +283,9 @@ var Cards = function (_React$Component) {
 	return Cards;
 }(_react2.default.Component);
 
+Cards.defaultProps = {
+	max: 1
+};
 exports.default = Cards;
 
 /***/ }),
@@ -550,9 +567,15 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var surfaceStyle = {
+var interactiveStyle = {
 	backgroundColor: '#999',
-	display: 'flex',
+	//	display: 'flex', // set in index.html so it can be overridden by media query
+	flexDirection: 'column',
+	height: '100%'
+};
+
+var printableStyle = {
+	//	display: 'flex', // set in index.html so it can be overridden by media query
 	flexDirection: 'column',
 	height: '100%'
 };
@@ -694,185 +717,255 @@ var Surface = function (_React$Component) {
 				padding: 10,
 				width: this.state.cardWidth
 			};
+			var cardStylePrint = {
+				border: '1px solid #000',
+				boxSizing: 'border-box',
+				height: '3in',
+				padding: 10,
+				width: '5in'
+			};
 
 			return _react2.default.createElement(
 				'div',
 				{
-					id: 'surface',
-					style: surfaceStyle
+					id: 'surface'
 				},
 				_react2.default.createElement(
 					'div',
 					{
-						id: 'header',
-						style: headerStyle
-					},
-					_react2.default.createElement(
-						'span',
-						{ style: { padding: '10px 15px' } },
-						'Flashcard Builder'
-					),
-					_react2.default.createElement(
-						_IconButton2.default,
-						{
-							tooltip: 'menu',
-							tooltipPosition: 'bottom-left',
-							onTouchTap: this.handleMenu
-						},
-						_react2.default.createElement(_menu2.default, { color: '#666' })
-					)
-				),
-				_react2.default.createElement(
-					'div',
-					{
-						id: 'workspace',
-						style: workspaceStyle
-					},
-					_react2.default.createElement(
-						_Cards2.default,
-						null,
-						this.state.data.map(function (card, i) {
-							return _react2.default.createElement(_Card2.default, {
-								key: i,
-								style: cardStyle,
-								data: card,
-								front: _this2.state.cardFresh,
-								frontTemplate: _this2.state.templateFront,
-								backTemplate: _this2.state.templateBack,
-								onCardClicked: _this2.handleCardClicked
-							});
-						})
-					)
-				),
-				_react2.default.createElement(
-					'div',
-					{
-						id: 'footer',
-						style: footerStyle
-					},
-					_react2.default.createElement(
-						_IconButton2.default,
-						{
-							href: 'https://github.com/dconstructing/flashcard-builder',
-							tooltip: 'Find on GitHub',
-							tooltipPosition: 'top-right'
-						},
-						_react2.default.createElement(_socialGithub2.default, {
-							size: 24,
-							color: '#666'
-						})
-					),
-					'Donate with:',
-					_react2.default.createElement(_FlatButton2.default, {
-						href: 'https://www.paypal.me/davidgawaincox',
-						label: 'PayPal',
-						style: { color: '#666' }
-					}),
-					'-',
-					_react2.default.createElement(_FlatButton2.default, {
-						href: 'https://cash.me/$davidgawaincox',
-						label: 'Square Cash',
-						style: { color: '#666' }
-					})
-				),
-				_react2.default.createElement(
-					_Drawer2.default,
-					{
-						containerStyle: drawerStyle,
-						open: this.state.drawerOpen,
-						openSecondary: true,
-						width: 400
+						id: 'interactive',
+						style: interactiveStyle
 					},
 					_react2.default.createElement(
 						'div',
 						{
-							id: 'drawerheader',
-							style: { textAlign: 'right' }
+							id: 'header',
+							style: headerStyle
 						},
+						_react2.default.createElement(
+							'span',
+							{ style: { padding: '10px 15px' } },
+							'Flashcard Builder'
+						),
 						_react2.default.createElement(
 							_IconButton2.default,
 							{
-								tooltip: 'close',
+								tooltip: 'menu',
 								tooltipPosition: 'bottom-left',
 								onTouchTap: this.handleMenu
 							},
-							_react2.default.createElement(_close2.default, null)
+							_react2.default.createElement(_menu2.default, { color: '#666' })
 						)
 					),
 					_react2.default.createElement(
 						'div',
-						{ style: { margin: 10 } },
+						{
+							id: 'workspace',
+							style: workspaceStyle
+						},
 						_react2.default.createElement(
-							'div',
-							{ style: { display: 'flex', justifyContent: 'space-between' } },
-							_react2.default.createElement(
-								'span',
-								{ style: { fontSize: '1.5em' } },
-								'Selected File'
-							),
-							_react2.default.createElement(
-								_IconButton2.default,
-								{
-									onClick: this.showFileSelectorInfo
-								},
-								_react2.default.createElement(_info2.default, null)
-							)
-						),
-						_react2.default.createElement(_FilePickerGoogleDrive2.default, {
-							onDataChange: this.handleDataChanged
-						})
+							_Cards2.default,
+							null,
+							this.state.data.map(function (card, i) {
+								return _react2.default.createElement(_Card2.default, {
+									key: i,
+									style: cardStyle,
+									data: card,
+									front: _this2.state.cardFresh,
+									frontTemplate: _this2.state.templateFront,
+									backTemplate: _this2.state.templateBack,
+									onCardClicked: _this2.handleCardClicked
+								});
+							})
+						)
 					),
-					_react2.default.createElement(_Divider2.default, null),
 					_react2.default.createElement(
 						'div',
-						{ style: { margin: 10 } },
+						{
+							id: 'footer',
+							style: footerStyle
+						},
+						_react2.default.createElement(
+							_IconButton2.default,
+							{
+								href: 'https://github.com/dconstructing/flashcard-builder',
+								tooltip: 'Find on GitHub',
+								tooltipPosition: 'top-right'
+							},
+							_react2.default.createElement(_socialGithub2.default, {
+								size: 24,
+								color: '#666'
+							})
+						),
+						'Donate with:',
+						_react2.default.createElement(_FlatButton2.default, {
+							href: 'https://www.paypal.me/davidgawaincox',
+							label: 'PayPal',
+							style: { color: '#666' }
+						}),
+						'-',
+						_react2.default.createElement(_FlatButton2.default, {
+							href: 'https://cash.me/$davidgawaincox',
+							label: 'Square Cash',
+							style: { color: '#666' }
+						})
+					),
+					_react2.default.createElement(
+						_Drawer2.default,
+						{
+							containerStyle: drawerStyle,
+							open: this.state.drawerOpen,
+							openSecondary: true,
+							width: 400
+						},
 						_react2.default.createElement(
 							'div',
-							{ style: { display: 'flex', justifyContent: 'space-between' } },
-							_react2.default.createElement(
-								'span',
-								{ style: { fontSize: '1.5em' } },
-								'Card Format'
-							),
+							{
+								id: 'drawerheader',
+								style: { textAlign: 'right' }
+							},
 							_react2.default.createElement(
 								_IconButton2.default,
 								{
-									onClick: this.showFormatInfo
+									tooltip: 'close',
+									tooltipPosition: 'bottom-left',
+									onTouchTap: this.handleMenu
 								},
-								_react2.default.createElement(_info2.default, null)
+								_react2.default.createElement(_close2.default, null)
 							)
 						),
 						_react2.default.createElement(
-							'p',
-							null,
-							'Card Front'
+							'div',
+							{ style: { margin: 10 } },
+							_react2.default.createElement(
+								'div',
+								{ style: { display: 'flex', justifyContent: 'space-between' } },
+								_react2.default.createElement(
+									'span',
+									{ style: { fontSize: '1.5em' } },
+									'Selected File'
+								),
+								_react2.default.createElement(
+									_IconButton2.default,
+									{
+										onClick: this.showFileSelectorInfo
+									},
+									_react2.default.createElement(_info2.default, null)
+								)
+							),
+							_react2.default.createElement(_FilePickerGoogleDrive2.default, {
+								onDataChange: this.handleDataChanged
+							})
 						),
-						_react2.default.createElement('textarea', {
-							name: 'frontTemplateField',
-							style: templateEditorStyle,
-							defaultValue: this.state.templateFront,
-							onBlur: this.frontTemplateChanged
-						}),
+						_react2.default.createElement(_Divider2.default, null),
 						_react2.default.createElement(
-							'p',
-							null,
-							'Card Back'
-						),
-						_react2.default.createElement('textarea', {
-							name: 'backTemplateField',
-							style: templateEditorStyle,
-							defaultValue: this.state.templateBack,
-							onBlur: this.backTemplateChanged
-						})
+							'div',
+							{ style: { margin: 10 } },
+							_react2.default.createElement(
+								'div',
+								{ style: { display: 'flex', justifyContent: 'space-between' } },
+								_react2.default.createElement(
+									'span',
+									{ style: { fontSize: '1.5em' } },
+									'Card Format'
+								),
+								_react2.default.createElement(
+									_IconButton2.default,
+									{
+										onClick: this.showFormatInfo
+									},
+									_react2.default.createElement(_info2.default, null)
+								)
+							),
+							_react2.default.createElement(
+								'p',
+								null,
+								'Card Front'
+							),
+							_react2.default.createElement('textarea', {
+								name: 'frontTemplateField',
+								style: templateEditorStyle,
+								defaultValue: this.state.templateFront,
+								onBlur: this.frontTemplateChanged
+							}),
+							_react2.default.createElement(
+								'p',
+								null,
+								'Card Back'
+							),
+							_react2.default.createElement('textarea', {
+								name: 'backTemplateField',
+								style: templateEditorStyle,
+								defaultValue: this.state.templateBack,
+								onBlur: this.backTemplateChanged
+							})
+						)
+					),
+					_react2.default.createElement(
+						_Dialog2.default,
+						{
+							open: this.state.infoDialogOpen,
+							onRequestClose: this.closeInfoDialog
+						},
+						this.state.infoDialogContent
 					)
 				),
 				_react2.default.createElement(
-					_Dialog2.default,
+					'div',
 					{
-						open: this.state.infoDialogOpen,
-						onRequestClose: this.closeInfoDialog
+						id: 'printable',
+						style: printableStyle
 					},
-					this.state.infoDialogContent
+					_react2.default.createElement(
+						'div',
+						{
+							id: 'header',
+							style: headerStyle
+						},
+						_react2.default.createElement(
+							'span',
+							{ style: { padding: '10px 15px' } },
+							'Flashcard Builder'
+						)
+					),
+					_react2.default.createElement(
+						'div',
+						{
+							id: 'workspace',
+							style: workspaceStyle
+						},
+						_react2.default.createElement(
+							_Cards2.default,
+							{ max: 0 },
+							this.state.data.map(function (card, i) {
+								return _react2.default.createElement(_Card2.default, {
+									key: i,
+									style: cardStylePrint,
+									data: card,
+									front: _this2.state.cardFresh,
+									frontTemplate: _this2.state.templateFront,
+									backTemplate: _this2.state.templateBack
+								});
+							})
+						)
+					),
+					_react2.default.createElement(
+						'div',
+						{
+							id: 'footer',
+							style: footerStyle
+						},
+						_react2.default.createElement(
+							'p',
+							null,
+							'Contribute on GitHub (https://github.com/dconstructing/flashcard-builder)'
+						),
+						_react2.default.createElement(
+							'p',
+							null,
+							'Donate with PayPal (https://www.paypal.me/davidgawaincox) or Square Cash (https://cash.me/$davidgawaincox)'
+						)
+					)
 				)
 			);
 		}

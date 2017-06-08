@@ -14,11 +14,17 @@ import Card from '../Card';
 import Cards from '../Cards';
 import FilePickerGoogleDrive from '../FilePickerGoogleDrive';
 
-const surfaceStyle = {
+const interactiveStyle = {
 	backgroundColor: '#999',
-	display: 'flex',
+//	display: 'flex', // set in index.html so it can be overridden by media query
 	flexDirection: 'column',
 	height: '100%',
+};
+
+const printableStyle = {
+//	display: 'flex', // set in index.html so it can be overridden by media query
+	flexDirection: 'column',
+	height: '100%'
 };
 
 const headerStyle = {
@@ -163,133 +169,179 @@ class Surface extends React.Component {
 			padding: 10,
 			width: this.state.cardWidth
 		};
+		const cardStylePrint = {
+			border: '1px solid #000',
+			boxSizing: 'border-box',
+			height: '3in',
+			padding: 10,
+			width: '5in'
+		};
 
 		return(
 			<div
 				id="surface"
-				style={surfaceStyle}
 			>
 				<div
-					id="header"
-					style={headerStyle}
-				>
-					<span style={{padding: '10px 15px'}}>Flashcard Builder</span>
-					<IconButton
-						tooltip="menu"
-						tooltipPosition="bottom-left"
-						onTouchTap={this.handleMenu}
-					>
-						<NavigationMenu color="#666" />
-					</IconButton>
-				</div>
-				<div
-					id="workspace"
-					style={workspaceStyle}
-				>
-					<Cards>
-						{this.state.data.map((card, i) => {
-							return <Card
-								key={i}
-								style={cardStyle}
-								data={card}
-								front={this.state.cardFresh}
-								frontTemplate={this.state.templateFront}
-								backTemplate={this.state.templateBack}
-								onCardClicked={this.handleCardClicked}
-							/>;
-						})}
-					</Cards>
-				</div>
-				<div
-					id="footer"
-					style={footerStyle}
-				>
-					<IconButton
-						href="https://github.com/dconstructing/flashcard-builder"
-						tooltip="Find on GitHub"
-						tooltipPosition="top-right"
-					>
-						<IoSocialGithub
-							size={24}
-							color='#666'
-						/>
-					</IconButton>
-					Donate with:
-					<FlatButton
-						href="https://www.paypal.me/davidgawaincox"
-						label="PayPal"
-						style={{color: '#666'}}
-					/>
-					-
-					<FlatButton
-						href="https://cash.me/$davidgawaincox"
-						label="Square Cash"
-						style={{color: '#666'}}
-					/>
-				</div>
-				<Drawer
-					containerStyle={drawerStyle}
-					open={this.state.drawerOpen}
-					openSecondary={true}
-					width={400}
+					id="interactive"
+					style={interactiveStyle}
 				>
 					<div
-						id="drawerheader"
-						style={{textAlign: 'right'}}
+						id="header"
+						style={headerStyle}
 					>
+						<span style={{padding: '10px 15px'}}>Flashcard Builder</span>
 						<IconButton
-							tooltip="close"
+							tooltip="menu"
 							tooltipPosition="bottom-left"
 							onTouchTap={this.handleMenu}
 						>
-							<NavigationClose />
+							<NavigationMenu color="#666" />
 						</IconButton>
 					</div>
-					<div style={{margin: 10}}>
-						<div style={{display: 'flex', justifyContent: 'space-between'}}>
-							<span style={{fontSize: '1.5em'}}>Selected File</span>
-							<IconButton
-								onClick={this.showFileSelectorInfo}
-							>
-								<ActionInfo />
-							</IconButton>
-						</div>
-						<FilePickerGoogleDrive
-							onDataChange={this.handleDataChanged}
+					<div
+						id="workspace"
+						style={workspaceStyle}
+					>
+						<Cards>
+							{this.state.data.map((card, i) => {
+								return <Card
+									key={i}
+									style={cardStyle}
+									data={card}
+									front={this.state.cardFresh}
+									frontTemplate={this.state.templateFront}
+									backTemplate={this.state.templateBack}
+									onCardClicked={this.handleCardClicked}
+								/>;
+							})}
+						</Cards>
+					</div>
+					<div
+						id="footer"
+						style={footerStyle}
+					>
+						<IconButton
+							href="https://github.com/dconstructing/flashcard-builder"
+							tooltip="Find on GitHub"
+							tooltipPosition="top-right"
+						>
+							<IoSocialGithub
+								size={24}
+								color='#666'
+							/>
+						</IconButton>
+						Donate with:
+						<FlatButton
+							href="https://www.paypal.me/davidgawaincox"
+							label="PayPal"
+							style={{color: '#666'}}
+						/>
+						-
+						<FlatButton
+							href="https://cash.me/$davidgawaincox"
+							label="Square Cash"
+							style={{color: '#666'}}
 						/>
 					</div>
-					<Divider />
-					<div style={{margin: 10}}>
-						<div style={{display: 'flex', justifyContent: 'space-between'}}>
-							<span style={{fontSize: '1.5em'}}>Card Format</span>
+					<Drawer
+						containerStyle={drawerStyle}
+						open={this.state.drawerOpen}
+						openSecondary={true}
+						width={400}
+					>
+						<div
+							id="drawerheader"
+							style={{textAlign: 'right'}}
+						>
 							<IconButton
-								onClick={this.showFormatInfo}
+								tooltip="close"
+								tooltipPosition="bottom-left"
+								onTouchTap={this.handleMenu}
 							>
-								<ActionInfo />
+								<NavigationClose />
 							</IconButton>
 						</div>
-						<p>Card Front</p>
-						<textarea
-							name="frontTemplateField"
-							style={templateEditorStyle}
-							defaultValue={this.state.templateFront}
-							onBlur={this.frontTemplateChanged}
-						/>
-						<p>Card Back</p>
-						<textarea
-							name="backTemplateField"
-							style={templateEditorStyle}
-							defaultValue={this.state.templateBack}
-							onBlur={this.backTemplateChanged}
-						/>
-					</div>
-				</Drawer>
-				<Dialog
-					open={this.state.infoDialogOpen}
-					onRequestClose={this.closeInfoDialog}
+						<div style={{margin: 10}}>
+							<div style={{display: 'flex', justifyContent: 'space-between'}}>
+								<span style={{fontSize: '1.5em'}}>Selected File</span>
+								<IconButton
+									onClick={this.showFileSelectorInfo}
+								>
+									<ActionInfo />
+								</IconButton>
+							</div>
+							<FilePickerGoogleDrive
+								onDataChange={this.handleDataChanged}
+							/>
+						</div>
+						<Divider />
+						<div style={{margin: 10}}>
+							<div style={{display: 'flex', justifyContent: 'space-between'}}>
+								<span style={{fontSize: '1.5em'}}>Card Format</span>
+								<IconButton
+									onClick={this.showFormatInfo}
+								>
+									<ActionInfo />
+								</IconButton>
+							</div>
+							<p>Card Front</p>
+							<textarea
+								name="frontTemplateField"
+								style={templateEditorStyle}
+								defaultValue={this.state.templateFront}
+								onBlur={this.frontTemplateChanged}
+							/>
+							<p>Card Back</p>
+							<textarea
+								name="backTemplateField"
+								style={templateEditorStyle}
+								defaultValue={this.state.templateBack}
+								onBlur={this.backTemplateChanged}
+							/>
+						</div>
+					</Drawer>
+					<Dialog
+						open={this.state.infoDialogOpen}
+						onRequestClose={this.closeInfoDialog}
+					>
+						{this.state.infoDialogContent}
+					</Dialog>
+				</div>
+				<div
+					id="printable"
+					style={printableStyle}
 				>
-					{this.state.infoDialogContent}
-				</Dialog>
+					<div
+						id="header"
+						style={headerStyle}
+					>
+						<span style={{padding: '10px 15px'}}>Flashcard Builder</span>
+					</div>
+					<div
+						id="workspace"
+						style={workspaceStyle}
+					>
+						<Cards max={0}>
+							{this.state.data.map((card, i) => {
+								return <Card
+									key={i}
+									style={cardStylePrint}
+									data={card}
+									front={this.state.cardFresh}
+									frontTemplate={this.state.templateFront}
+									backTemplate={this.state.templateBack}
+								/>;
+							})}
+						</Cards>
+					</div>
+					<div
+						id="footer"
+						style={footerStyle}
+					>
+						<p>Contribute on GitHub (https://github.com/dconstructing/flashcard-builder)</p>
+						<p>Donate with PayPal (https://www.paypal.me/davidgawaincox) or Square Cash (https://cash.me/$davidgawaincox)</p>
+					</div>
+				</div>
 			</div>
 		);
 	}
