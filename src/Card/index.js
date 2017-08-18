@@ -6,16 +6,16 @@ import Paper from 'material-ui/Paper';
 
 const htmlToReactParser = new Parser();
 
-class Card extends React.Component {
-	props: {
-		style?: Object,
-		data: Array<string>,
-		front?: boolean,
-		frontTemplate?: string,
-		backTemplate?: string,
-		onCardClicked?: () => void
-	};
+type Props = {
+	style?: Object,
+	data: Array<string>,
+	front?: boolean,
+	frontTemplate?: string,
+	backTemplate?: string,
+	onCardClicked?: () => void
+};
 
+class Card extends React.Component<Props> {
 	static defaultProps = {
 		front: true,
 		backTemplate: '<p>{{col2}}</p>',
