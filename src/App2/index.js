@@ -10,14 +10,12 @@ const muiTheme = getMuiTheme({
 	fontFamily: 'Open Sans',
 });
 
-class App2 extends React.Component {
-	render() {
-		return (
-			<MuiThemeProvider muiTheme={muiTheme}>
-				<Surface />
-			</MuiThemeProvider>
-		);
-	}
+function App2() {
+	return (
+		<MuiThemeProvider muiTheme={muiTheme}>
+			<Surface />
+		</MuiThemeProvider>
+	);
 }
 
 export default App2;
