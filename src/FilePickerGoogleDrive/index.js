@@ -8,7 +8,6 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import googleClientLoader from '../lib/googleClient';
 
-type DefaultProps = void;
 type Props = {
 	onDataChange: (Array<Array<string>>) => void
 };
@@ -20,7 +19,7 @@ type State = {
 	selectedFileId?: ?string,
 };
 
-class FilePickerGoogleDrive extends React.Component<DefaultProps, Props, State> {
+class FilePickerGoogleDrive extends React.Component<Props, State> {
 	googleClient: any;
 	state = {
 		anchor: null,

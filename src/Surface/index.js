@@ -59,7 +59,27 @@ const templateEditorStyle = {
 	width: '100%',
 };
 
-class Surface extends React.Component {
+type Props = {
+	bogus?: boolean,
+};
+
+type State = {
+	cardFresh: boolean,
+	cardHeight: number,
+	cardWidth: number,
+	data: Array<any>,
+	drawerOpen: boolean,
+	infoDialogContent: string,
+	infoDialogOpen: boolean,
+	templateBack: string,
+	templateFront: string
+};
+
+class Surface extends React.Component<Props, State> {
+	static defaultProps = {
+		bogus: false
+	};
+
 	state = {
 		cardFresh: true,
 		cardHeight: 0,

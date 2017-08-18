@@ -2,14 +2,18 @@
 import React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 
-class Cards extends React.Component {
+type Props = {
+	children: any,
+	max: number,
+};
+
+type State = {
+	index: number
+};
+
+class Cards extends React.Component<Props, State> {
 	static defaultProps = {
 		max: 1,
-	};
-
-	props: {
-		children: any,
-		max: number,
 	};
 
 	state = {
