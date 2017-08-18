@@ -6456,17 +6456,12 @@ var EnhancedButton = function (_Component) {
 
         _this.props.onFocus(event);
       }
-    }, _this.handleClick = function (event) {
-      if (!_this.props.disabled) {
-        tabPressed = false;
-        _this.props.onClick(event);
-      }
     }, _this.handleTouchTap = function (event) {
       _this.cancelFocusTimeout();
       if (!_this.props.disabled) {
         tabPressed = false;
         _this.removeKeyboardFocus(event);
-        _this.props.onTouchTap(event);
+        _this.props.onClick(event);
       }
     }, _temp), (0, _possibleConstructorReturn3.default)(_this, _ret);
   }
@@ -6606,11 +6601,10 @@ var EnhancedButton = function (_Component) {
           onKeyUp = _props3.onKeyUp,
           onKeyDown = _props3.onKeyDown,
           onKeyboardFocus = _props3.onKeyboardFocus,
-          onTouchTap = _props3.onTouchTap,
           style = _props3.style,
           tabIndex = _props3.tabIndex,
           type = _props3.type,
-          other = (0, _objectWithoutProperties3.default)(_props3, ['centerRipple', 'children', 'containerElement', 'disabled', 'disableFocusRipple', 'disableKeyboardFocus', 'disableTouchRipple', 'focusRippleColor', 'focusRippleOpacity', 'href', 'keyboardFocused', 'touchRippleColor', 'touchRippleOpacity', 'onBlur', 'onClick', 'onFocus', 'onKeyUp', 'onKeyDown', 'onKeyboardFocus', 'onTouchTap', 'style', 'tabIndex', 'type']);
+          other = (0, _objectWithoutProperties3.default)(_props3, ['centerRipple', 'children', 'containerElement', 'disabled', 'disableFocusRipple', 'disableKeyboardFocus', 'disableTouchRipple', 'focusRippleColor', 'focusRippleOpacity', 'href', 'keyboardFocused', 'touchRippleColor', 'touchRippleOpacity', 'onBlur', 'onClick', 'onFocus', 'onKeyUp', 'onKeyDown', 'onKeyboardFocus', 'style', 'tabIndex', 'type']);
       var _context$muiTheme = this.context.muiTheme,
           prepareStyles = _context$muiTheme.prepareStyles,
           enhancedButton = _context$muiTheme.enhancedButton;
@@ -6657,11 +6651,10 @@ var EnhancedButton = function (_Component) {
         disabled: disabled,
         href: href,
         onBlur: this.handleBlur,
-        onClick: this.handleClick,
         onFocus: this.handleFocus,
         onKeyUp: this.handleKeyUp,
         onKeyDown: this.handleKeyDown,
-        onTouchTap: this.handleTouchTap,
+        onClick: this.handleTouchTap,
         tabIndex: disabled || disableKeyboardFocus ? -1 : tabIndex
       });
 
@@ -6689,7 +6682,6 @@ EnhancedButton.defaultProps = {
   onKeyDown: function onKeyDown() {},
   onKeyUp: function onKeyUp() {},
   onKeyboardFocus: function onKeyboardFocus() {},
-  onTouchTap: function onTouchTap() {},
   tabIndex: 0,
   type: 'button'
 };
@@ -6714,7 +6706,6 @@ EnhancedButton.propTypes = process.env.NODE_ENV !== "production" ? {
   onKeyDown: _propTypes2.default.func,
   onKeyUp: _propTypes2.default.func,
   onKeyboardFocus: _propTypes2.default.func,
-  onTouchTap: _propTypes2.default.func,
   style: _propTypes2.default.object,
   tabIndex: _propTypes2.default.number,
   touchRippleColor: _propTypes2.default.string,
@@ -15061,7 +15052,7 @@ function getStyles(props, context) {
 
   var styles = {
     root: {
-      // Nested div bacause the List scales x faster than it scales y
+      // Nested div because the List scales x faster than it scales y
       zIndex: muiTheme.zIndex.menu,
       maxHeight: maxHeight,
       overflowY: maxHeight ? 'auto' : null
@@ -15210,9 +15201,9 @@ var Menu = function (_Component) {
 
         (0, _simpleAssign2.default)(extraProps, {
           focusState: focusState,
-          onTouchTap: function onTouchTap(event) {
+          onClick: function onClick(event) {
             _this2.handleMenuItemTouchTap(event, child, index);
-            if (child.props.onTouchTap) child.props.onTouchTap(event);
+            if (child.props.onClick) child.props.onClick(event);
           },
           ref: isFocused ? 'focusedMenuItem' : null
         });
@@ -15497,6 +15488,18 @@ var _initialiseProps = function _initialiseProps() {
 
   this.handleClickAway = function (event) {
     if (event.defaultPrevented) {
+      return;
+    }
+
+    var focusIndex = _this5.state.focusIndex;
+
+    if (focusIndex < 0) {
+      return;
+    }
+
+    var filteredChildren = _this5.getFilteredChildren(_this5.props.children);
+    var focusedItem = filteredChildren[focusIndex];
+    if (focusedItem.props.menuItems && focusedItem.props.menuItems.length > 0) {
       return;
     }
 
@@ -15918,7 +15921,8 @@ var Popover = function (_Component) {
           style = _this$props.style,
           targetOrigin = _this$props.targetOrigin,
           useLayerForClickAway = _this$props.useLayerForClickAway,
-          other = (0, _objectWithoutProperties3.default)(_this$props, ['animated', 'animation', 'anchorEl', 'anchorOrigin', 'autoCloseWhenOffScreen', 'canAutoPosition', 'children', 'onRequestClose', 'style', 'targetOrigin', 'useLayerForClickAway']);
+          scrollableContainer = _this$props.scrollableContainer,
+          other = (0, _objectWithoutProperties3.default)(_this$props, ['animated', 'animation', 'anchorEl', 'anchorOrigin', 'autoCloseWhenOffScreen', 'canAutoPosition', 'children', 'onRequestClose', 'style', 'targetOrigin', 'useLayerForClickAway', 'scrollableContainer']);
 
 
       var styleRoot = style;
@@ -15963,11 +15967,11 @@ var Popover = function (_Component) {
         return;
       }
 
-      if (!_this.refs.layer.getLayer()) {
+      if (!_this.popoverRefs.layer.getLayer()) {
         return;
       }
 
-      var targetEl = _this.refs.layer.getLayer().children[0];
+      var targetEl = _this.popoverRefs.layer.getLayer().children[0];
       if (!targetEl) {
         return;
       }
@@ -16003,6 +16007,8 @@ var Popover = function (_Component) {
     _this.handleResize = (0, _lodash2.default)(_this.setPlacement, 100);
     _this.handleScroll = (0, _lodash2.default)(_this.setPlacement.bind(_this, true), 50);
 
+    _this.popoverRefs = {};
+
     _this.state = {
       open: props.open,
       closing: false
@@ -16013,7 +16019,7 @@ var Popover = function (_Component) {
   (0, _createClass3.default)(Popover, [{
     key: 'componentDidMount',
     value: function componentDidMount() {
-      this.setPlacement();
+      this.placementTimeout = setTimeout(this.setPlacement);
     }
   }, {
     key: 'componentWillReceiveProps',
@@ -16053,13 +16059,19 @@ var Popover = function (_Component) {
   }, {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
-      this.setPlacement();
+      clearTimeout(this.placementTimeout);
+      this.placementTimeout = setTimeout(this.setPlacement);
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       this.handleResize.cancel();
       this.handleScroll.cancel();
+
+      if (this.placementTimeout) {
+        clearTimeout(this.placementTimeout);
+        this.placementTimeout = null;
+      }
 
       if (this.timeout) {
         clearTimeout(this.timeout);
@@ -16199,6 +16211,8 @@ var Popover = function (_Component) {
   }, {
     key: 'render',
     value: function render() {
+      var _this3 = this;
+
       return _react2.default.createElement(
         'div',
         { style: styles.root },
@@ -16208,7 +16222,9 @@ var Popover = function (_Component) {
           onResize: this.handleResize
         }),
         _react2.default.createElement(_RenderToLayer2.default, {
-          ref: 'layer',
+          ref: function ref(_ref) {
+            return _this3.popoverRefs.layer = _ref;
+          },
           open: this.state.open,
           componentClickAway: this.componentClickAway,
           useLayerForClickAway: this.props.useLayerForClickAway,
@@ -34828,7 +34844,7 @@ var DialogInline = function (_Component2) {
           show: open,
           className: overlayClassName,
           style: styles.overlay,
-          onTouchTap: this.handleTouchTapOverlay
+          onClick: this.handleTouchTapOverlay
         })
       );
     }
@@ -36051,7 +36067,7 @@ var Drawer = function (_Component) {
           className: overlayClassName,
           style: (0, _simpleAssign2.default)(styles.overlay, overlayStyle),
           transitionEnabled: !this.state.swiping,
-          onTouchTap: this.handleTouchTapOverlay
+          onClick: this.handleTouchTapOverlay
         });
       }
 
@@ -36483,6 +36499,12 @@ FlatButton.propTypes = process.env.NODE_ENV !== "production" ? {
    */
   labelStyle: _propTypes2.default.object,
   /**
+   * Callback function fired when the button is touch-tapped.
+   *
+   * @param {object} event TouchTap event targeting the button.
+   */
+  onClick: _propTypes2.default.func,
+  /**
    * Callback function fired when the element is focused or blurred by the keyboard.
    *
    * @param {object} event `focus` or `blur` event targeting the element.
@@ -36495,12 +36517,6 @@ FlatButton.propTypes = process.env.NODE_ENV !== "production" ? {
   onMouseLeave: _propTypes2.default.func,
   /** @ignore */
   onTouchStart: _propTypes2.default.func,
-  /**
-   * Callback function fired when the button is touch-tapped.
-   *
-   * @param {object} event TouchTap event targeting the button.
-   */
-  onTouchTap: _propTypes2.default.func,
   /**
    * If true, colors button according to
    * primaryTextColor from the Theme.
@@ -37975,6 +37991,12 @@ IconButton.propTypes = process.env.NODE_ENV !== "production" ? {
   iconStyle: _propTypes2.default.object,
   /** @ignore */
   onBlur: _propTypes2.default.func,
+  /**
+   * Callback function fired when the button is touch-tapped.
+   *
+   * @param {object} event TouchTap event targeting the button.
+   */
+  onClick: _propTypes2.default.func,
   /** @ignore */
   onFocus: _propTypes2.default.func,
   /**
@@ -37992,12 +38014,6 @@ IconButton.propTypes = process.env.NODE_ENV !== "production" ? {
   onMouseOut: _propTypes2.default.func,
   /** @ignore */
   onTouchStart: _propTypes2.default.func,
-  /**
-   * Callback function fired when the button is touch-tapped.
-   *
-   * @param {object} event TouchTap event targeting the button.
-   */
-  onTouchTap: _propTypes2.default.func,
   /**
    * Override the inline-styles of the root element.
    */
@@ -43910,13 +43926,13 @@ var MenuItem = function (_Component) {
       open: false
     }, _this.cloneMenuItem = function (item) {
       return _react2.default.cloneElement(item, {
-        onTouchTap: function onTouchTap(event) {
+        onClick: function onClick(event) {
           if (!item.props.menuItems) {
             _this.handleRequestClose();
           }
 
-          if (item.props.onTouchTap) {
-            item.props.onTouchTap(event);
+          if (item.props.onClick) {
+            item.props.onClick(event);
           }
         }
       });
@@ -43928,8 +43944,8 @@ var MenuItem = function (_Component) {
         anchorEl: _reactDom2.default.findDOMNode(_this)
       });
 
-      if (_this.props.onTouchTap) {
-        _this.props.onTouchTap(event);
+      if (_this.props.onClick) {
+        _this.props.onClick(event);
       }
     }, _this.handleRequestClose = function () {
       _this.setState({
@@ -44047,7 +44063,7 @@ var MenuItem = function (_Component) {
             _react2.default.Children.map(menuItems, this.cloneMenuItem)
           )
         );
-        other.onTouchTap = this.handleTouchTap;
+        other.onClick = this.handleTouchTap;
       }
 
       return _react2.default.createElement(
@@ -44143,7 +44159,7 @@ MenuItem.propTypes = process.env.NODE_ENV !== "production" ? {
    *
    * @param {object} event TouchTap event targeting the menu item.
    */
-  onTouchTap: _propTypes2.default.func,
+  onClick: _propTypes2.default.func,
   /**
    * Can be used to render primary text within the menu item.
    */
@@ -45085,8 +45101,8 @@ var ListItem = function (_Component) {
       _this.setState({ hovered: false });
       _this.props.onMouseLeave(event);
     }, _this.handleTouchTap = function (event) {
-      if (_this.props.onTouchTap) {
-        _this.props.onTouchTap(event);
+      if (_this.props.onClick) {
+        _this.props.onClick(event);
       }
 
       if (_this.props.primaryTogglesNestedList) {
@@ -45139,7 +45155,7 @@ var ListItem = function (_Component) {
 
       // Stop the event from bubbling up to the list-item
       event.stopPropagation();
-      if (iconButton && iconButton.props.onTouchTap) iconButton.props.onTouchTap(event);
+      if (iconButton && iconButton.props.onClick) iconButton.props.onClick(event);
     }, _this.handleTouchStart = function (event) {
       _this.setState({ touch: true });
       _this.props.onTouchStart(event);
@@ -45288,7 +45304,7 @@ var ListItem = function (_Component) {
           onMouseLeave = _props3.onMouseLeave,
           onNestedListToggle = _props3.onNestedListToggle,
           onTouchStart = _props3.onTouchStart,
-          onTouchTap = _props3.onTouchTap,
+          onClick = _props3.onClick,
           rightAvatar = _props3.rightAvatar,
           rightIcon = _props3.rightIcon,
           rightIconButton = _props3.rightIconButton,
@@ -45298,7 +45314,7 @@ var ListItem = function (_Component) {
           secondaryText = _props3.secondaryText,
           secondaryTextLines = _props3.secondaryTextLines,
           style = _props3.style,
-          other = (0, _objectWithoutProperties3.default)(_props3, ['autoGenerateNestedIndicator', 'children', 'containerElement', 'disabled', 'disableKeyboardFocus', 'hoverColor', 'initiallyOpen', 'innerDivStyle', 'insetChildren', 'leftAvatar', 'leftCheckbox', 'leftIcon', 'nestedItems', 'nestedLevel', 'nestedListStyle', 'onKeyboardFocus', 'isKeyboardFocused', 'onMouseEnter', 'onMouseLeave', 'onNestedListToggle', 'onTouchStart', 'onTouchTap', 'rightAvatar', 'rightIcon', 'rightIconButton', 'rightToggle', 'primaryText', 'primaryTogglesNestedList', 'secondaryText', 'secondaryTextLines', 'style']);
+          other = (0, _objectWithoutProperties3.default)(_props3, ['autoGenerateNestedIndicator', 'children', 'containerElement', 'disabled', 'disableKeyboardFocus', 'hoverColor', 'initiallyOpen', 'innerDivStyle', 'insetChildren', 'leftAvatar', 'leftCheckbox', 'leftIcon', 'nestedItems', 'nestedLevel', 'nestedListStyle', 'onKeyboardFocus', 'isKeyboardFocused', 'onMouseEnter', 'onMouseLeave', 'onNestedListToggle', 'onTouchStart', 'onClick', 'rightAvatar', 'rightIcon', 'rightIconButton', 'rightToggle', 'primaryText', 'primaryTogglesNestedList', 'secondaryText', 'secondaryTextLines', 'style']);
       var prepareStyles = this.context.muiTheme.prepareStyles;
 
       var styles = getStyles(this.props, this.context, this.state);
@@ -45341,7 +45357,7 @@ var ListItem = function (_Component) {
           onKeyboardFocus: this.handleRightIconButtonKeyboardFocus,
           onMouseEnter: this.handleRightIconButtonMouseEnter,
           onMouseLeave: this.handleRightIconButtonMouseLeave,
-          onTouchTap: this.handleRightIconButtonTouchTap,
+          onClick: this.handleRightIconButtonTouchTap,
           onMouseDown: this.handleRightIconButtonMouseUp,
           onMouseUp: this.handleRightIconButtonMouseUp
         };
@@ -45357,7 +45373,7 @@ var ListItem = function (_Component) {
             null,
             _react2.default.createElement(_expandMore2.default, null)
           );
-          rightIconButtonHandlers.onTouchTap = this.handleNestedListToggle;
+          rightIconButtonHandlers.onClick = this.handleNestedListToggle;
         }
 
         this.pushElement(contentChildren, rightIconButtonElement, (0, _simpleAssign2.default)({}, styles.rightIconButton), rightIconButtonHandlers);
@@ -45399,7 +45415,7 @@ var ListItem = function (_Component) {
             onMouseEnter: this.handleMouseEnter,
             onTouchStart: this.handleTouchStart,
             onTouchEnd: this.handleTouchEnd,
-            onTouchTap: this.handleTouchTap,
+            onClick: this.handleTouchTap,
             disabled: disabled,
             ref: function ref(node) {
               return _this2.button = node;
@@ -45524,6 +45540,12 @@ ListItem.propTypes = process.env.NODE_ENV !== "production" ? {
    */
   nestedListStyle: _propTypes2.default.object,
   /**
+   * Callback function fired when the list item is touch-tapped.
+   *
+   * @param {object} event TouchTap event targeting the list item.
+   */
+  onClick: _propTypes2.default.func,
+  /**
    * Callback function fired when the `ListItem` is focused or blurred by the keyboard.
    *
    * @param {object} event `focus` or `blur` event targeting the `ListItem`.
@@ -45544,12 +45566,6 @@ ListItem.propTypes = process.env.NODE_ENV !== "production" ? {
   onTouchEnd: _propTypes2.default.func,
   /** @ignore */
   onTouchStart: _propTypes2.default.func,
-  /**
-   * Callback function fired when the list item is touch-tapped.
-   *
-   * @param {object} event TouchTap event targeting the list item.
-   */
-  onTouchTap: _propTypes2.default.func,
   /**
    * Control toggle state of nested list.
    */
@@ -46386,6 +46402,12 @@ RaisedButton.propTypes = process.env.NODE_ENV !== "production" ? {
    * Override the inline-styles of the button's label element.
    */
   labelStyle: _propTypes2.default.object,
+  /**
+   * Callback function fired when the button is touch-tapped.
+   *
+   * @param {object} event TouchTap event targeting the button.
+   */
+  onClick: _propTypes2.default.func,
   /** @ignore */
   onMouseDown: _propTypes2.default.func,
   /** @ignore */
@@ -46398,12 +46420,6 @@ RaisedButton.propTypes = process.env.NODE_ENV !== "production" ? {
   onTouchEnd: _propTypes2.default.func,
   /** @ignore */
   onTouchStart: _propTypes2.default.func,
-  /**
-   * Callback function fired when the button is touch-tapped.
-   *
-   * @param {object} event TouchTap event targeting the button.
-   */
-  onTouchTap: _propTypes2.default.func,
   /**
    * Override the inline style of the button overlay.
    */
