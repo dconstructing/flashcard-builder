@@ -1,6 +1,7 @@
 [ignore]
 
 .*/node_modules/react-event-listener/src/.*
+.*/node_modules/react-tap-event-plugin/src/.*
 
 [include]
 
