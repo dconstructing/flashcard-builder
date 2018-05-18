@@ -7,7 +7,7 @@
   "devDependencies": {
     "babel-core": "^6.17.0",
     "babel-eslint": "^8.0.1",
-    "babel-jest": "^21.2.0",
+    "babel-jest": "^22.4.4",
     "babel-loader": "^7.0.0",
     "babel-plugin-transform-class-properties": "^6.16.0",
     "babel-polyfill": "general set of polyfills for use with react 16",
