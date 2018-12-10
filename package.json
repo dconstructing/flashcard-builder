@@ -16,7 +16,7 @@
     "babel-preset-latest": "^6.24.1",
     "babel-preset-react": "^6.16.0",
     "enzyme": "^3.8.0",
-    "enzyme-adapter-react-16": "^1.0.0",
+    "enzyme-adapter-react-16": "^1.7.1",
     "eslint": "^4.1.0",
     "eslint-plugin-flowtype": "^2.34.0",
     "eslint-plugin-react": "^7.0.1",
