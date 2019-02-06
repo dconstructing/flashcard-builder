@@ -34,7 +34,7 @@
     "react-icons": "^2.2.5",
     "react-safe-html": "^0.4.0",
     "react-tap-event-plugin": "^3.0.2",
-    "react-test-renderer": "^16.0.0",
+    "react-test-renderer": "^16.8.1",
     "rimraf": "^2.6.1",
     "source-map-loader": "^0.2.1",
     "webpack": "^3.0.0"
