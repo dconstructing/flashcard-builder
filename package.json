@@ -29,7 +29,7 @@
     "mustache": "^2.3.0",
     "raf": "requestAnimationFrame polyfill for jest testing with react 16",
     "raf": "^3.3.2",
-    "react": "^16.0.0",
+    "react": "^16.12.0",
     "react-dom": "^16.0.0",
     "react-icons": "^2.2.5",
     "react-safe-html": "^0.4.0",
